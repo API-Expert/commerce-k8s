@@ -1,0 +1,1 @@
+kubectl --context=commerce -n commerce annotate svc/catalog-api konghq.com/plugins=catalog-cache-plugin --overwrite=true

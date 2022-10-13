@@ -1,0 +1,45 @@
+apiVersion: kuma.io/v1alpha1
+kind: TrafficRoute
+mesh: default
+metadata: 
+  name: route-default-catalog
+spec: 
+  sources: 
+    - match: 
+        kuma.io/service: '*'
+  destinations: 
+    - match: 
+        kuma.io/service: 'catalog-api_commerce_svc_80'
+  conf: 
+    loadBalancer: 
+      roundRobin: {}
+    http:
+      - match:
+          headers:
+            canary: # one of either "prefix", "exact" or "regex" will be allowed
+              exact: "yes"
+        destination:
+          kuma.io/service: 'catalog-api_commerce_svc_80'
+          version: v2  
+      - match:
+          headers:
+            stable: # one of either "prefix", "exact" or "regex" will be allowed
+              exact: "yes"
+        destination:
+          kuma.io/service: 'catalog-api_commerce_svc_80'
+          version: v1  
+
+ 
+    split:
+        - weight: 50
+          destination:
+            kuma.io/service: 'catalog-api_commerce_svc_80'
+            version: v1
+        - weight: 50
+          destination:
+            kuma.io/service: 'catalog-api_commerce_svc_80'
+            version: v2
+        - weight: 0
+          destination:
+            kuma.io/service: 'catalog-api_commerce_svc_80'
+            version: v3

@@ -1,0 +1,20 @@
+apiVersion: kuma.io/v1alpha1
+kind: CircuitBreaker
+mesh: default
+metadata:
+  name: circuit-breaker-catalog
+spec:
+  sources: 
+    - match: 
+        kuma.io/service: '*'
+  destinations: 
+    - match: 
+        kuma.io/service: 'catalog-api_commerce_svc_80'
+  conf:
+    interval: 10s
+    baseEjectionTime: 2s
+    maxEjectionPercent: 100
+    splitExternalAndLocalErrors: false 
+    detectors:
+      totalErrors: 
+        consecutive: 3

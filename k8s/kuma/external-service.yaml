@@ -1,0 +1,11 @@
+apiVersion: kuma.io/v1alpha1
+kind: ExternalService
+mesh: default
+metadata:
+  name: mongo
+spec:
+  tags:
+    kuma.io/service: mongo
+    kuma.io/protocol: tcp 
+  networking:
+    address: mongo.mongo.svc:27017

@@ -1,0 +1,17 @@
+apiVersion: configuration.konghq.com/v1
+kind: KongClusterPlugin
+metadata:
+  name: global-zipkin-plugin
+  annotations:
+    kubernetes.io/ingress.class: kong
+  labels:
+    global: "true"
+config: 
+  http_endpoint: http://jaeger-collector.mesh-observability:9411/api/v2/spans
+  sample_ratio: 1 #envia todos os requests para o zipkin
+  include_credential: true
+  traceid_byte_count: 16
+  header_type: preserve
+  default_header_type: b3
+  tags_header: Zipkin-Tags
+plugin: zipkin

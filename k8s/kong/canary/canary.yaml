@@ -1,0 +1,25 @@
+apiVersion: configuration.konghq.com/v1
+kind: KongClusterPlugin
+metadata:
+  name: global-request-transformer-remove-canary-header
+  annotations:
+    kubernetes.io/ingress.class: kong
+  labels:
+    global: "true"
+config: 
+  remove:
+    headers:
+    - canary
+plugin: request-transformer
+
+---
+apiVersion: configuration.konghq.com/v1
+kind: KongPlugin
+metadata:
+  name: request-transformer-canary
+  namespace: commerce
+config: 
+  add:
+    headers:
+    - canary:yes
+plugin: request-transformer

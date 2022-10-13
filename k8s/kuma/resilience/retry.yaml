@@ -1,0 +1,26 @@
+apiVersion: kuma.io/v1alpha1
+kind: Retry
+mesh: default
+metadata:
+  name: catalog-api-retry
+spec:
+  sources:
+  - match:
+      kuma.io/service: '*'
+  destinations:
+  - match:
+      kuma.io/service: catalog-api_commerce_svc_80
+  conf:
+    http:
+      numRetries: 2
+      perTryTimeout: 2s
+      backOff:
+        baseInterval: 100ms
+        maxInterval: 300s
+      retriableStatusCodes:
+      - 500
+      - 503
+      retriableMethods:
+      - POST
+      - PUT
+      - GET

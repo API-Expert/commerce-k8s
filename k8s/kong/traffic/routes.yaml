@@ -1,0 +1,79 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: catalog-default-route
+  namespace: commerce
+  annotations:    
+    kubernetes.io/ingress.class: kong
+    konghq.com/plugins: external-acl
+    konghq.com/preserve-host: "false"
+
+    #konghq.com/strip-path: "true" # roteamento por path 
+spec:
+  tls:
+  - hosts:
+      - localhost
+    secretName: localhost-tls
+  rules:
+  - http:
+      paths:
+      - path: /catalog/(.*)
+        pathType: Prefix      
+        backend:
+          service:
+            name: catalog-api
+            port: 
+              number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: products-default-route
+  namespace: commerce
+  annotations:    
+    kubernetes.io/ingress.class: kong
+    konghq.com/plugins: marketing-acl
+    konghq.com/preserve-host: "false"
+    #konghq.com/strip-path: "true" # roteamento por path 
+spec:
+  tls:
+  - hosts:
+      - localhost
+    secretName: localhost-tls
+  rules:
+  - http:
+      paths:
+      - path: /products/(.*)
+        pathType: Prefix      
+        backend:
+          service:
+            name: products-api
+            port: 
+              number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: pricing-default-route
+  namespace: commerce
+  annotations:    
+    kubernetes.io/ingress.class: kong
+    konghq.com/plugins: pricing-acl
+    konghq.com/preserve-host: "false"
+    #konghq.com/strip-path: "true" # roteamento por path 
+spec:
+  tls:
+  - hosts:
+      - localhost
+    secretName: localhost-tls
+  rules:
+  - http:
+      paths:
+      - path: /pricing/(.*)
+        pathType: Prefix      
+        backend:
+          service:
+            name: pricing-api
+            port: 
+              number: 80
+ 

@@ -1,0 +1,22 @@
+apiVersion: kuma.io/v1alpha1
+kind: FaultInjection
+mesh: default
+metadata:
+  name: fault-injection
+spec:
+  sources:
+    - match:
+        kuma.io/service: '*'
+        kuma.io/protocol: '*'
+  destinations:
+    - match:
+        kuma.io/service: catalog-api_commerce_svc_80
+        kuma.io/protocol: http
+  conf:        
+    abort:
+      httpStatus: 500
+      percentage: 50
+    delay:
+      percentage: 0
+      value: 1s
+
