@@ -55,9 +55,9 @@ upload_images() {
     docker pull docker.io/patrickreinan/commerce-pricingapi:latest
     docker pull docker.io/patrickreinan/commerce-catalogapi:latest
 
-    minikube image load docker.io/patrickreinan/commerce-productsapi:latest
-    minikube image load docker.io/patrickreinan/commerce-pricingapi:latest
-    minikube image load docker.io/patrickreinan/commerce-catalogapi:latest
+    minikube -p $CONTEXT image load docker.io/patrickreinan/commerce-productsapi:latest
+    minikube -p $CONTEXT image load docker.io/patrickreinan/commerce-pricingapi:latest
+    minikube -p $CONTEXT image load docker.io/patrickreinan/commerce-catalogapi:latest
 }
 
 start_k8s

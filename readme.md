@@ -1,25 +1,36 @@
 # Commerce 
 
-## Description
-Commerce is a solution which demonstrates API Gateway and Service Mesh.
+## Preparando o ambiente
 
-# Guide
-- Gateway
-    - TLS
-    - API Key
-    - Throttling (Product API)
-    - Caching (Catalog API)
-- Service Mesh
-    - Mutual TLS
-    - Balancing
-        - Stable
-        - Try using header canary:yes
-    - Canary (with user)
-- Observability (both)
-    - Kong
-    - Kuma
-    - Logging
+1. Instale as ferramentas
 
+    Ferramenta|URL
+    -|-
+    Postman|https://www.postman.com/
+    kubectl|https://kubernetes.io/docs/tasks/tools/
+    minikube|https://minikube.sigs.k8s.io/docs/start/
+    Docker|https://docs.docker.com/engine/install/
+
+2. Instale o certificado ```tls/localhost-ca.pem``` no Postman ou ```tls/localhost-ca.key``` no computador local.
+
+## Configurando o API Gateway
+
+### Configuração do TLS
+```sh
+kubectl apply -f k8s/kong/global-plugins/security/tls.yaml
+```
+
+### Criação das rotas
+
+```sh
+kubectl apply -f k8s/kong/traffic/routes.yaml 
+```
+
+### Ativação de API Key
+
+```sh
+kubectl apply -f k8s/kong/global-plugins/security/key-auth.yaml
+```
 
 ## Applications
 
