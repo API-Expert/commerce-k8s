@@ -160,7 +160,7 @@ Utilize o _script_ ```test-catalog-through-kong.sh``` para executar diversas cha
 ./test-catalog-through-kong.sh 
 ```
 
-## Observabilidade
+## Observabilidade - Análise
 Adicione os _dashboards_ ao Grafana.
 Name|URL
 -|-
