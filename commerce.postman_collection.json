@@ -1,0 +1,525 @@
+{
+	"info": {
+		"_postman_id": "eb28b8c9-da09-43ce-be46-f4639140f177",
+		"name": "commerce",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "1749533"
+	},
+	"item": [
+		{
+			"name": "catalog",
+			"item": [
+				{
+					"name": "items",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"productId\": \"00000000-0000-0000-0000-0000000000000003\",\n    \"name\": \"Product\",\n    \"description\":\"description\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{catalogBaseUrl}}/catalog/items/",
+							"host": [
+								"{{catalogBaseUrl}}"
+							],
+							"path": [
+								"catalog",
+								"items",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "items",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Product\",\n    \"description\":\"description\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{catalogBaseUrl}}/catalog/items/:id",
+							"host": [
+								"{{catalogBaseUrl}}"
+							],
+							"path": [
+								"catalog",
+								"items",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{productid}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "set price item",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"price\": 0.0\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{catalogBaseUrl}}/catalog/items/:id/price",
+							"host": [
+								"{{catalogBaseUrl}}"
+							],
+							"path": [
+								"catalog",
+								"items",
+								":id",
+								"price"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{productid}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "items (balancing)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "canary",
+								"value": "yes",
+								"description": "it does not work due API Gateway header removal",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "stable",
+								"value": "yes",
+								"description": "force stable usage",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{catalogBaseUrl}}/catalog/items",
+							"host": [
+								"{{catalogBaseUrl}}"
+							],
+							"path": [
+								"catalog",
+								"items"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "items (canary - by user)",
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "external-api-canary-key",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "apiKey",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{catalogBaseUrl}}/catalog/items",
+							"host": [
+								"{{catalogBaseUrl}}"
+							],
+							"path": [
+								"catalog",
+								"items"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "items by productId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{catalogBaseUrl}}/catalog/items/:productid",
+							"host": [
+								"{{catalogBaseUrl}}"
+							],
+							"path": [
+								"catalog",
+								"items",
+								":productid"
+							],
+							"variable": [
+								{
+									"key": "productid",
+									"value": "{{productid}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "items by productId",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{catalogBaseUrl}}/catalog/items/:productId",
+							"host": [
+								"{{catalogBaseUrl}}"
+							],
+							"path": [
+								"catalog",
+								"items",
+								":productId"
+							],
+							"variable": [
+								{
+									"key": "productId",
+									"value": "{{productid}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "apikey",
+				"apikey": [
+					{
+						"key": "value",
+						"value": "external-api-key",
+						"type": "string"
+					},
+					{
+						"key": "key",
+						"value": "apiKey",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "pricing",
+			"item": [
+				{
+					"name": "items",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{pricingBaseUrl}}/pricing/items/:id",
+							"host": [
+								"{{pricingBaseUrl}}"
+							],
+							"path": [
+								"pricing",
+								"items",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{productid}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "items",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"productId\":\"00000000-0000-0000-0000-0000000000000003\",\n    \"price\":123.3\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{pricingBaseUrl}}/pricing/items/",
+							"host": [
+								"{{pricingBaseUrl}}"
+							],
+							"path": [
+								"pricing",
+								"items",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "apikey",
+				"apikey": [
+					{
+						"key": "value",
+						"value": "pricing-api-key",
+						"type": "string"
+					},
+					{
+						"key": "key",
+						"value": "apiKey",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "product",
+			"item": [
+				{
+					"name": "products",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \n    \"name\": \"Product 1\",\n    \"description\":\"Product 1 is good\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{productBaseUrl}}/products/",
+							"host": [
+								"{{productBaseUrl}}"
+							],
+							"path": [
+								"products",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "products",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \n    \"name\": \"Product 1\",\n    \"description\":\"Product 1 is good good\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{productBaseUrl}}/products/:id",
+							"host": [
+								"{{productBaseUrl}}"
+							],
+							"path": [
+								"products",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{productid}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "products",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{productBaseUrl}}/products/:id",
+							"host": [
+								"{{productBaseUrl}}"
+							],
+							"path": [
+								"products",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{productid}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "apikey",
+				"apikey": [
+					{
+						"key": "value",
+						"value": "marketing-api-key",
+						"type": "string"
+					},
+					{
+						"key": "key",
+						"value": "apiKey",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "catalogBaseUrl",
+			"value": "http://localhost:6002"
+		},
+		{
+			"key": "pricingBaseUrl",
+			"value": "http://localhost:6003"
+		},
+		{
+			"key": "productBaseUrl",
+			"value": "http://localhost:6001",
+			"type": "string"
+		},
+		{
+			"key": "productid",
+			"value": "95653fc7-792f-4d3d-b304-70aa9ac57266"
+		}
+	]
+}

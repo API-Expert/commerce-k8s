@@ -1,1 +1,0 @@
-kubectl --context=commerce -n commerce annotate svc/catalog-api konghq.com/plugins= --overwrite=true

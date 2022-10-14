@@ -1,0 +1,75 @@
+apiVersion: configuration.konghq.com/v1
+kind: KongPlugin
+metadata:
+  name: external-acl
+  namespace: commerce
+plugin: acl
+config:
+  allow: ['external']
+---
+apiVersion: configuration.konghq.com/v1
+kind: KongPlugin
+metadata:
+  name: marketing-acl
+  namespace: commerce
+plugin: acl
+config:
+  allow: ['marketing']
+---
+apiVersion: configuration.konghq.com/v1
+kind: KongPlugin
+metadata:
+  name: pricing-acl
+  namespace: commerce
+plugin: acl
+config:
+  allow: ['pricing']
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: external-credential-acl
+  namespace: commerce
+type: Opaque
+data:
+  # kongCredType: acl
+  kongCredType: YWNs
+  #key: external
+  group: ZXh0ZXJuYWw=
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: external-credential-canary-acl
+  namespace: commerce
+type: Opaque
+data:
+  kongCredType: YWNs
+  #key: external
+  group: ZXh0ZXJuYWw=
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: marketing-credential-acl
+  namespace: commerce
+type: Opaque
+data:
+  # Os dados são armazenados em base64
+  # kongCredType: acl
+  kongCredType: YWNs
+  # key: marketing
+  group: bWFya2V0aW5n
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: pricing-credential-acl
+  namespace: commerce
+type: Opaque
+data:
+  # Os dados são armazenados em base64
+  # kongCredType: acl
+  kongCredType: YWNs
+  # key: pricing
+  group: cHJpY2luZw==

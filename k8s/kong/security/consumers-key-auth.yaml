@@ -1,0 +1,108 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: external-api-key
+  namespace: commerce
+type: Opaque
+data:
+  # Os dados são armazenados em base64
+  # kongCredType: key-auth
+  kongCredType: a2V5LWF1dGg=
+  # key: 
+  key: ZXh0ZXJuYWwtYXBpLWtleQ==
+---
+
+apiVersion: configuration.konghq.com/v1
+kind: KongConsumer
+metadata:
+  name: external
+  namespace: commerce
+  annotations:
+    kubernetes.io/ingress.class: kong
+username: external
+credentials:
+- external-api-key
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: external-api-canary-key
+  namespace: commerce
+type: Opaque
+data:
+  # Os dados são armazenados em base64
+  # kongCredType: key-auth
+  kongCredType: a2V5LWF1dGg=
+  # key: 
+  key: ZXh0ZXJuYWwtYXBpLWNhbmFyeS1rZXk=
+
+---
+apiVersion: configuration.konghq.com/v1
+kind: KongConsumer
+metadata:
+  name: external-canary
+  namespace: commerce
+  annotations:
+    kubernetes.io/ingress.class: kong
+username: external-canary
+credentials:
+- external-api-canary-key
+
+---
+
+apiVersion: v1
+kind: Secret
+metadata:
+  name: marketing-api-key
+  namespace: commerce
+type: Opaque
+data:
+  # Os dados são armazenados em base64
+  # kongCredType: key-auth
+  kongCredType: a2V5LWF1dGg=
+  # key: 
+  key: bWFya2V0aW5nLWFwaS1rZXk=
+---
+
+
+
+apiVersion: configuration.konghq.com/v1
+kind: KongConsumer
+metadata:
+  name: marketing
+  namespace: commerce
+  annotations:
+    kubernetes.io/ingress.class: kong
+username: marketing
+credentials:
+- marketing-api-key
+
+---
+
+apiVersion: v1
+kind: Secret
+metadata:
+  name: pricing-api-key
+  namespace: commerce
+type: Opaque
+data:
+  # Os dados são armazenados em base64
+  # kongCredType: key-auth
+  kongCredType: a2V5LWF1dGg=
+  # key: 
+  key: cHJpY2luZy1hcGkta2V5
+
+---
+
+apiVersion: configuration.konghq.com/v1
+kind: KongConsumer
+metadata:
+  name: pricing
+  namespace: commerce
+  annotations:
+    kubernetes.io/ingress.class: kong
+username: pricing
+credentials:
+- pricing-api-key
+---

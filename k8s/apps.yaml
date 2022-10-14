@@ -246,7 +246,6 @@ metadata:
   name: products-api
   namespace: commerce
   annotations:
-    #ingress.kubernetes.io/service-upstream: "true"
     80.service.kuma.io/protocol: "http"
 spec:
   selector:
@@ -261,7 +260,6 @@ metadata:
   name: pricing-api
   namespace: commerce
   annotations:
-    #ingress.kubernetes.io/service-upstream: "true"
     80.service.kuma.io/protocol: "http"
 spec:
   selector:

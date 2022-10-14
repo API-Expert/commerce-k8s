@@ -11,4 +11,5 @@ config:
   - 'apiexpert' 
   deny:
   - 'dummy-hacker'
+  - 'Postman.*'
 plugin: bot-detection

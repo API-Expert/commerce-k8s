@@ -5,7 +5,6 @@ metadata:
   namespace: commerce
   annotations:    
     kubernetes.io/ingress.class: kong
-    konghq.com/plugins: external-acl
     konghq.com/preserve-host: "false"
 
     #konghq.com/strip-path: "true" # roteamento por path 
@@ -32,7 +31,6 @@ metadata:
   namespace: commerce
   annotations:    
     kubernetes.io/ingress.class: kong
-    konghq.com/plugins: marketing-acl
     konghq.com/preserve-host: "false"
     #konghq.com/strip-path: "true" # roteamento por path 
 spec:
@@ -58,7 +56,6 @@ metadata:
   namespace: commerce
   annotations:    
     kubernetes.io/ingress.class: kong
-    konghq.com/plugins: pricing-acl
     konghq.com/preserve-host: "false"
     #konghq.com/strip-path: "true" # roteamento por path 
 spec:
