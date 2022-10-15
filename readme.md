@@ -18,6 +18,8 @@
 ./create-environment.sh
 ```
 
+> A instalação leva aproximadamente 5 minutos
+
 4. Execute o script ```port-forward.sh``` para criar uma ligação entre a porta local e a porta do serviço no _cluster_ ```kubernetes```.
 
     Saída:
