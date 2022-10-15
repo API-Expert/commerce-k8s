@@ -389,6 +389,33 @@
 					"response": []
 				},
 				{
+					"name": "products incorrect apikey",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \n    \"name\": \"Product 1\",\n    \"description\":\"Product 1 is good\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{productBaseUrl}}/products/",
+							"host": [
+								"{{productBaseUrl}}"
+							],
+							"path": [
+								"products",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "products",
 					"request": {
 						"method": "PUT",
