@@ -30,8 +30,6 @@ install_infrastructure() {
 }
 
 install_gateway() {
-
-    kubectl --context $CONTEXT apply -f k8s/kong-ingress-dbless.yaml
     kubectl --context=$CONTEXT wait pods -n kong -l app=ingress-kong --for condition=Ready --timeout=90s 
 }
 

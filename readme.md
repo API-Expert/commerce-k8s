@@ -79,7 +79,7 @@ Para acessar o API Gateway será necessário criar ```consumers```e chaves (API 
 kubectl apply -f k8s/kong/security/consumers-key-auth.yaml
 ```
 
-> Utilizando a coleção do Postman será possível notar que as chamadas agora são permitidas
+> Utilizando a coleção do Postman será possível notar que as chamadas agora são permitidas. Observe também que independente da chave, todas as rotas estão acessíveis, gerando problemas de segurança. Isso será corrigido com o controle de acesso. No Postman, utilize a requisição ```commerce/products/products incorrect apikey``` e veja que ela funcionará. 
 
 ## Crie o controle de acesso (autorização)
 
@@ -107,19 +107,37 @@ kubectl -n commerce annotate ingress pricing-default-route  konghq.com/plugins=p
 
 > Tente fazer chamadas invertendo os usuário e veja que o API Gateway irá negar a chamada.
 
+
+> Tente usar utilizar novamente a requisição ```commerce/products/products incorrect apikey``` e veja que não será mais possível.
+
+```json
+{
+    "message": "You cannot consume this service"
+}
+```
+
 ## Bot Detection
-O controle de detecção de _bot_ irá bloquear chamadas de acordo com o User Agent informado no header da requisição. 
+O controle de detecção de _bot_ irá bloquear chamadas de acordo com o User Agent informado no ```header``` da requisição. 
 
 ```sh
 kubectl apply -f k8s/kong/global-plugins/security/bot-detection.yaml
 ```
-> Faça alguns testes e veja que a detecção de _bot_ está bloqueando o Postman.
+Faça alguns testes e veja que a detecção de _bot_ está bloqueando o Postman.
+
+```json
+{
+    "message": "Forbidden"
+}
+```
+
+Remova a detecção de _bot_ para não atrapalhar os próximos testes.
 
 ```sh
 kubectl delete -f k8s/kong/global-plugins/security/bot-detection.yaml
 ```
 
-> Remova a detecção de _bot_ para não atrapalhar os próximos testes.
+> Veja as regras da detecção de bot em https://docs.konghq.com/hub/kong-inc/bot-detection/#:~:text=https%3A//github.com/Kong/kong/blob/master/kong/plugins/bot%2Ddetection/rules.lua
+
 
 ## IP Restriction
 
@@ -128,12 +146,17 @@ A restrição por IP pode ser usado para permitir ou bloquear IPs válidos para 
 kubectl apply -f k8s/kong/global-plugins/security/ip-restriction.yml
 ```
 
-> Faça alguns testes e sua requisição será bloqueada
+Faça alguns testes e sua requisição será bloqueada:
+```json
+{
+    "message": "Your IP address is not allowed"
+}
+```
+Desabilite para não atrapalhar os próximos testes
 
 ```sh
 kubectl delete -f k8s/kong/global-plugins/security/ip-restriction.yml
 ```
-> Desabilite para não atrapalhar os próximos testes
 
 ## Throttling (Rate Limiting)
 O _throttling_ irá controlar a quantidade máxima de requisições por período de tempo.
@@ -142,14 +165,24 @@ Configure o rate limiting para o consumidor ```marketing```.
 kubectl apply -f k8s/kong/traffic/throttling.yaml
 kubectl -n commerce annotate KongConsumer marketing konghq.com/plugins=rate-limiting-plugin  --overwrite=true
 ```
-> Faça alguns testes e verifique os _headers_ de retorno, eles mostrarão a quantidade restante de chamadas.
+Faça alguns testes com as requisições da pasta ```products``` e verifique os ```headers``` de retorno, eles mostrarão as informações referente ao _throttiling_.
+
+Headers
+```
+RateLimit-Remaining 
+RateLimit-Reset
+X-RateLimit-Limit-Minute
+X-RateLimit-Remaining-Minute
+RateLimit-Limit
+```
+
+Desabilite se achar necessário:
 
 ```sh
 kubectl -n commerce annotate KongConsumer marketing konghq.com/plugins=  --overwrite=true
 kubectl delete -f k8s/kong/traffic/throttling.yaml
 ```
 
-> Desabilite para não atrapalhar os próximos testes
 
 ## Cache
 O cache vai permitir que as respostas as requisições sejam armazenadas no API Gateway por um período de tempo. Habilte o cache para o ```catalog```.
@@ -159,14 +192,20 @@ kubectl apply -f k8s/kong/traffic/caching.yaml
 kubectl -n commerce annotate svc/catalog-api konghq.com/plugins=catalog-cache-plugin --overwrite=true
 ```
 
-> Faça alguns testes e verifique os _headers_ de _cache_.
+Faça alguns testes com as requisições da pasta ```catalog``` e verifique os ```headers``` de _cache_.
+
+Headers
+```
+X-Cache-Key
+X-Cache-Status
+```
+Desabilite se achar necessário.
 
 ```
 kubectl -n commerce annotate svc/catalog-api konghq.com/plugins= --overwrite=true
 kubectl delete -f k8s/kong/traffic/caching.yaml
 ```
 
-> Desabilite se achar necessário.
 
 ## Gerando massa de requisições
 Utilize o _script_ ```test-catalog-through-kong.sh``` para executar diversas chamadas para massa de dados.
@@ -175,11 +214,9 @@ Utilize o _script_ ```test-catalog-through-kong.sh``` para executar diversas cha
 ```
 
 ## Observabilidade - Análise
-Adicione os _dashboards_ ao Grafana.
+Adicione o _dashboards_ de análise do Kong ao Grafana:
 
-Name|URL
--|-
-Kong Official Dashboard (7424)|https://grafana.com/grafana/dashboards/7424 
+**Kong Official Dashboard (7424)** - https://grafana.com/grafana/dashboards/7424
 
 Adicione o ```data source``` do ElasticSearch para o endereço
 ```
@@ -188,4 +225,4 @@ http://elasticsearch.elasticsearch.svc:9200
 
 Importe o _dashboard_ ```grafana/kong-logs.json``` ao Grafana.
 
-
+Visualize os dados nos _dashboards_ importados.
