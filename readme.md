@@ -63,6 +63,12 @@ A ativação do ```plugin``` global KeyAuth fará com que todas as requisições
 kubectl apply -f k8s/kong/global-plugins/security/key-auth.yaml
 ```
 
+```json
+{
+    "message": "Invalid authentication credentials"
+}
+```
+
 > Faça algumas chamadas e veja que agora o acesso está sendo negado pelo API Gateway.
 
 ## Crie os consumidores e as chaves
