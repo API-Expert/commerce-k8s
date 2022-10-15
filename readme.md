@@ -226,3 +226,5 @@ http://elasticsearch.elasticsearch.svc:9200
 Importe o _dashboard_ ```grafana/kong-logs.json``` ao Grafana.
 
 Visualize os dados nos _dashboards_ importados.
+
+Visualize os dados de _tracing_ no Jaeger.

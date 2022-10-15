@@ -17,7 +17,7 @@ portforward() {
 
     if [ -f "$pidFile" ]
     then
-        kill $(cat $pidFile) 
+        kill $(cat $pidFile) `` > /dev/null
         rm $pidFile
     fi
 
@@ -31,6 +31,11 @@ portforward() {
     echo $service - $portorigin
 
 }
+
+kubectl --context=$CONTEXT wait pods -n kuma-system -l app=kuma-control-plane --for condition=Ready --timeout=90s
+kubectl --context=$CONTEXT wait pods -n kong -l app=ingress-kong --for condition=Ready --timeout=90s
+kubectl --context=$CONTEXT wait pods -n mesh-observability -l app=grafana --for condition=Ready --timeout=90s
+kubectl --context=$CONTEXT wait pods -n mesh-observability -l app=jaeger --for condition=Ready --timeout=90s
 
 
 
