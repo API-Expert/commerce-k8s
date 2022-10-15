@@ -14,6 +14,9 @@
 2. Instale o certificado ```tls/localhost-ca.pem``` no Postman ou ```tls/localhost-ca.key``` no computador local.
 
 3. Execute o script ```create-environment.sh``` para criar o ambiente.
+```sh
+./create-environment.sh
+```
 
 4. Execute o script ```port-forward.sh``` para criar uma ligação entre a porta local e a porta do serviço no _cluster_ ```kubernetes```.
 
