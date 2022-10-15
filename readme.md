@@ -36,6 +36,9 @@
     kubectl config use-context commerce
     ```
 
+    ```
+    Switched to context "commerce".
+    ```
 
 ## Observabilidade
 Com a observabilidade configurada será possível verificar o resultado das requisições feitas e analisar o comportamento do API Gateway. O comando abaixo irá configurar os plugins de _tracing, logging_ e _metrics_.
