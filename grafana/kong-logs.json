@@ -25,7 +25,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": 6,
-  "iteration": 1665874227040,
+  "iteration": 1666048914610,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -63,11 +63,11 @@
       },
       "gridPos": {
         "h": 28,
-        "w": 23,
+        "w": 24,
         "x": 0,
         "y": 0
       },
-      "id": 2,
+      "id": 4,
       "options": {
         "footer": {
           "fields": "",
@@ -76,45 +76,129 @@
           ],
           "show": false
         },
-        "showHeader": true,
-        "sortBy": [
-          {
-            "desc": false,
-            "displayName": "response.status"
-          }
-        ]
+        "showHeader": true
       },
       "pluginVersion": "8.5.2",
       "targets": [
         {
           "alias": "",
-          "bucketAggs": [
-            {
-              "field": "@timestamp",
-              "id": "2",
-              "settings": {
-                "interval": "auto"
-              },
-              "type": "date_histogram"
-            }
-          ],
+          "bucketAggs": [],
           "datasource": {
             "type": "elasticsearch",
             "uid": "_q3bfJIVk"
           },
           "metrics": [
             {
-              "id": "1",
-              "type": "logs"
+              "id": "3",
+              "settings": {
+                "size": "500"
+              },
+              "type": "raw_data"
             }
           ],
-          "query": "",
+          "query": "consumer.username.keyword:$consumer AND service.name.keyword:$service",
           "refId": "A",
           "timeField": "@timestamp"
         }
       ],
       "title": "Panel Title",
-      "transformations": [],
+      "transformations": [
+        {
+          "id": "seriesToColumns",
+          "options": {
+            "byField": "@timestamp"
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "@version": true,
+              "_id": true,
+              "_index": true,
+              "_type": true,
+              "authenticated_entity.id": true,
+              "consumer.created_at": true,
+              "consumer.id": true,
+              "highlight": true,
+              "latencies.request": true,
+              "port": true,
+              "request.headers.accept": true,
+              "request.headers.accept-encoding": true,
+              "request.headers.connection": true,
+              "request.headers.host": false,
+              "request.headers.postman-token": true,
+              "request.headers.stable": true,
+              "request.headers.user-agent": false,
+              "request.headers.x-b3-parentspanid": true,
+              "request.headers.x-b3-sampled": true,
+              "request.headers.x-b3-spanid": true,
+              "request.headers.x-b3-traceid": true,
+              "request.headers.x-consumer-groups": true,
+              "request.headers.x-consumer-id": true,
+              "request.headers.x-credential-identifier": true,
+              "request.querystring": false,
+              "request.tls.cipher": true,
+              "request.tls.client_verify": true,
+              "request.tls.version": true,
+              "request.url": true,
+              "response.headers.age": true,
+              "response.headers.connection": true,
+              "response.headers.content-length": true,
+              "response.headers.content-type": true,
+              "response.headers.date": true,
+              "response.headers.ratelimit-limit": true,
+              "response.headers.ratelimit-remaining": true,
+              "response.headers.ratelimit-reset": true,
+              "response.headers.server": true,
+              "response.headers.transfer-encoding": true,
+              "response.headers.version": true,
+              "response.headers.via": true,
+              "response.headers.x-cache-key": true,
+              "response.headers.x-cache-status": true,
+              "response.headers.x-envoy-upstream-service-time": true,
+              "response.headers.x-kong-proxy-latency": true,
+              "response.headers.x-kong-upstream-latency": true,
+              "response.headers.x-ratelimit-limit-minute": true,
+              "response.headers.x-ratelimit-remaining-minute": true,
+              "response.size": true,
+              "route.created_at": true,
+              "route.https_redirect_status_code": true,
+              "route.id": true,
+              "route.name": true,
+              "route.path_handling": true,
+              "route.paths": true,
+              "route.preserve_host": true,
+              "route.protocols": true,
+              "route.regex_priority": true,
+              "route.request_buffering": true,
+              "route.response_buffering": true,
+              "route.service.id": true,
+              "route.strip_path": true,
+              "route.updated_at": true,
+              "route.ws_id": true,
+              "service.connect_timeout": true,
+              "service.created_at": true,
+              "service.enabled": true,
+              "service.host": false,
+              "service.id": true,
+              "service.path": true,
+              "service.read_timeout": true,
+              "service.retries": true,
+              "service.updated_at": true,
+              "service.write_timeout": true,
+              "service.ws_id": true,
+              "sort": true,
+              "started_at": true,
+              "tries": true
+            },
+            "indexByName": {},
+            "renameByName": {
+              "@timestamp": ""
+            }
+          }
+        }
+      ],
       "type": "table"
     }
   ],
@@ -134,6 +218,52 @@
         "name": "Filters",
         "skipUrlSync": false,
         "type": "adhoc"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": {
+          "type": "elasticsearch",
+          "uid": "_q3bfJIVk"
+        },
+        "definition": "{\"find\": \"terms\", \"field\": \"consumer.username.keyword\"}",
+        "hide": 0,
+        "includeAll": true,
+        "multi": false,
+        "name": "consumer",
+        "options": [],
+        "query": "{\"find\": \"terms\", \"field\": \"consumer.username.keyword\"}",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "commerce.products-api.pnum-80",
+          "value": "commerce.products-api.pnum-80"
+        },
+        "datasource": {
+          "type": "elasticsearch",
+          "uid": "_q3bfJIVk"
+        },
+        "definition": "{\"find\": \"terms\", \"field\": \"service.name.keyword\"}",
+        "hide": 0,
+        "includeAll": true,
+        "multi": false,
+        "name": "service",
+        "options": [],
+        "query": "{\"find\": \"terms\", \"field\": \"service.name.keyword\"}",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
       }
     ]
   },
@@ -145,6 +275,6 @@
   "timezone": "",
   "title": "Kong logs",
   "uid": "d6rdecSVz",
-  "version": 3,
+  "version": 17,
   "weekStart": ""
 }
