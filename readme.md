@@ -1,5 +1,7 @@
 # Commerce 
 
+Commerce é um ambiente para estudar ferramentas de infraestrutura como API Gateway e Service Mesh
+
 ## Preparando o ambiente
 
 1. Instale as ferramentas
@@ -10,6 +12,7 @@
     kubectl|https://kubernetes.io/docs/tasks/tools/
     minikube|https://minikube.sigs.k8s.io/docs/start/
     Docker|https://docs.docker.com/engine/install/
+    Kuma|https://kuma.io/install/latest/
 
 2. Instale o certificado ```tls/localhost-ca.pem``` no Postman ou ```tls/localhost-ca.key``` no computador local.
 
@@ -39,6 +42,8 @@
     ```
     Switched to context "commerce".
     ```
+
+# API Gateway
 
 ## Observabilidade
 Com a observabilidade configurada será possível verificar o resultado das requisições feitas e analisar o comportamento do API Gateway. O comando abaixo irá configurar os plugins de _tracing, logging_ e _metrics_.
@@ -228,3 +233,112 @@ Importe o _dashboard_ ```grafana/kong-logs.json``` ao Grafana.
 Visualize os dados nos _dashboards_ importados.
 
 Visualize os dados de _tracing_ no Jaeger.
+
+# Service Mesh
+Antes de configurar o _service mesh_ é necessário preparar os serviços. Aplique as ```annotations``` abaxio para que os serviços sejam reconhecidos pelo ```service mesh```.
+
+```sh
+kubectl annotate service products-api -n commerce "80.service.kuma.io/protocol=http"  --overwrite=true
+kubectl annotate service pricing-api -n commerce "80.service.kuma.io/protocol=http" --overwrite=true
+kubectl annotate service catalog-api -n commerce "80.service.kuma.io/protocol=http" --overwrite=true
+```
+
+## Ativando o service mesh no namespace
+Para que o _service mesh_ seja instalado na aplicação é necessário que o namespace receba uma  ```annotation``` específica:
+
+```sh
+kubectl annotate namespace commerce kuma.io/sidecar-injection=enabled --overwrite=true
+```
+
+E para completar a ativação os ```pods``` precisam ser recriados.
+```sh
+kubectl rollout restart deploy -n commerce
+```
+
+Observe que agora os ```pods``` possuem 2 ```containers```:
+
+```sh
+NAME                            READY   STATUS    RESTARTS   AGE
+catalogapi-v1-75b586795-rhbjn   2/2     Running   0          46s
+pricingapi-6d9d45d84b-kmm7r     2/2     Running   0          46s
+productsapi-76f487bf4d-56gz2    2/2     Running   0          46s
+```
+
+> Acesse a interface do _service mesh_ para visualizar as configurações: http://localhost:5681/gui/
+
+Execute chamadas pelo Postman e veja que agora não estão funcionando.
+
+```json
+{
+    "message": "An invalid response was received from the upstream server"
+}
+````
+
+## Ativando as rotas 
+
+Antes de trabalhar com o roteamento é necessário ativar a versão 2 e 3 do ```catalog```.
+
+```sh
+kubectl scale deploy catalogapi-v2 --replicas=1 -n commerce 
+kubectl scale deploy catalogapi-v3 --replicas=1 -n commerce 
+```
+
+Além disso, desabilite o cache do API Gateway para não atrapalhar a visualização dos resultados:
+
+```sh
+kubectl -n commerce annotate svc/catalog-api konghq.com/plugins= --overwrite=true
+kubectl delete -f k8s/kong/traffic/caching.yaml
+```
+
+Para ativar as rotas no ```service mesh``` execute o comando abaixo:
+```sh
+kubectl apply -f k8s/kuma/routing/basic-traffic-route.yaml
+```
+
+Com as rotas ativadas no ```service mesh``` agora é possível acessar os serviços, faça algumas requisições utilizando o Postman.
+
+## Roteando pelo header
+Se o usuário passar o header ```version```  automaticamente o _service mesh_ irá redirecionar para versão v1 ou v2 do ```catalog```.
+
+```sh
+kubectl apply -f k8s/kuma/routing/catalog-route-to-specific-version.yaml
+```
+
+Utilize a requisição ```items (specific version)``` da pasta ```catalog``` do Postman e execute as chamadas para v1, v2 e sem header. Observe os resultados
+
+## Retry
+
+Ative novamente o roteamento básico e repare que 1 a cada 3 requisições falha.
+
+```sh
+kubectl apply -f k8s/kuma/routing/basic-traffic-route.yaml
+```
+
+Erro de status 500 e mensagem 
+
+```
+version has not been configured
+```
+
+Ative a política de ```retry``` e teste novamente:
+
+```sh
+kubectl apply -f k8s/kuma/resilience/retry.yaml
+```
+
+Desabilite para visualizar melhor os resultados da próxima configuração:
+
+```sh
+kubectl delete -f k8s/kuma/resilience/retry.yaml
+```
+
+
+## Circuit Breaker
+
+Ative o circuit breaker:
+
+```sh
+kubectl apply -f k8s/kuma/resilience/circuit-breaker.yaml
+```
+
+Execute algumas chamadas e observe que após o primeiro erro, a versão v3 é retirada do ar por 10 segundos e depois este tempo vai aumentando.

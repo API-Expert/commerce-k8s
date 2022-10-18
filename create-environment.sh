@@ -4,7 +4,7 @@ CONTEXT=commerce
 
 start_k8s () {
 
-    minikube delete -p $CONTEXT
+    #minikube delete -p $CONTEXT
 
     minikube start \
         -p $CONTEXT \
@@ -43,6 +43,7 @@ configure_service_mesh() {
     kubectl --context=$CONTEXT delete circuitbreaker circuit-breaker-all-default
     kubectl --context=$CONTEXT delete retry retry-all-default
     kubectl --context=$CONTEXT delete timeout timeout-all-default
+    kubectl --context=$CONTEXT delete timeout route-all-default
     
 }
 

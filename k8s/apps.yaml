@@ -2,8 +2,7 @@ apiVersion: v1
 kind: Namespace
 metadata:
   name: commerce
-  labels:
-    kuma.io/sidecar-injection: enabled
+   
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -245,8 +244,7 @@ kind: Service
 metadata:
   name: products-api
   namespace: commerce
-  annotations:
-    80.service.kuma.io/protocol: "http"
+    
 spec:
   selector:
     app: productsapi
@@ -259,8 +257,7 @@ kind: Service
 metadata:
   name: pricing-api
   namespace: commerce
-  annotations:
-    80.service.kuma.io/protocol: "http"
+    
 spec:
   selector:
     app: pricingapi
@@ -273,8 +270,7 @@ kind: Service
 metadata:
   name: catalog-api
   namespace: commerce
-  annotations:
-    80.service.kuma.io/protocol: "http"
+    
 spec:
   selector:
     app: catalogapi

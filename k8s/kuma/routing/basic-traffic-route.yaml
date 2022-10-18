@@ -1,0 +1,49 @@
+apiVersion: kuma.io/v1alpha1
+kind: TrafficRoute
+mesh: default
+metadata: 
+  name: route-default-catalog
+spec: 
+  sources: 
+    - match: 
+        kuma.io/service: '*'
+  destinations: 
+    - match: 
+        kuma.io/service: 'catalog-api_commerce_svc_80'
+  conf: 
+    destination:
+      kuma.io/service: 'catalog-api_commerce_svc_80'
+ 
+
+---
+apiVersion: kuma.io/v1alpha1
+kind: TrafficRoute
+mesh: default
+metadata: 
+  name: route-default-pricing
+spec: 
+  sources: 
+    - match: 
+        kuma.io/service: '*'
+  destinations: 
+    - match: 
+        kuma.io/service: 'pricing-api_commerce_svc_80'
+  conf: 
+    destination:
+      kuma.io/service: 'pricing-api_commerce_svc_80'
+---
+apiVersion: kuma.io/v1alpha1
+kind: TrafficRoute
+mesh: default
+metadata: 
+  name: route-default-products
+spec: 
+  sources: 
+    - match: 
+        kuma.io/service: '*'
+  destinations: 
+    - match: 
+        kuma.io/service: 'products-api_commerce_svc_80'
+  conf:  
+    destination:
+      kuma.io/service: 'products-api_commerce_svc_80'

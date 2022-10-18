@@ -31,19 +31,7 @@ spec:
     destination:
       kuma.io/service: 'catalog-api_commerce_svc_80'
  
-#    split:
-#        - weight: 50
-#          destination:
-#            kuma.io/service: 'catalog-api_commerce_svc_80'
-#            version: v1
-#        - weight: 50
-#          destination:
-#            kuma.io/service: 'catalog-api_commerce_svc_80'
-#            version: v2
-#        - weight: 0
-#          destination:
-#            kuma.io/service: 'catalog-api_commerce_svc_80'
-#            version: v3
+
 ---
 apiVersion: kuma.io/v1alpha1
 kind: TrafficRoute
@@ -80,3 +68,21 @@ spec:
       roundRobin:    
     destination:
       kuma.io/service: 'products-api_commerce_svc_80'
+---
+apiVersion: kuma.io/v1alpha1
+kind: TrafficRoute
+mesh: default
+metadata: 
+  name: route-all-default
+spec: 
+  sources: 
+    - match: 
+        kuma.io/service: '*'
+  destinations: 
+    - match: 
+        kuma.io/service: '*'
+  conf: 
+    loadBalancer: 
+      roundRobin: 
+    destination: 
+      kuma.io/service: '*'
