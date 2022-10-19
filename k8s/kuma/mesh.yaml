@@ -18,12 +18,12 @@ spec:
       conf:
         url: http://jaeger-collector.mesh-observability:9411/api/v2/spans
   logging:
-    defaultBackend: loki
+    defaultBackend: logstash
     backends:
-      - name: loki
-        type: file
+      - name: logstash
+        type: tcp
         conf:
-          path: /dev/stdout
+          address: logstash.logstash.svc:5044
   metrics:
     enabledBackend: prometheus-1
     backends:
