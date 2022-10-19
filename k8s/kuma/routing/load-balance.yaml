@@ -39,7 +39,4 @@ spec:
           destination:
             kuma.io/service: 'catalog-api_commerce_svc_80'
             version: v2
-        - weight: 0
-          destination:
-            kuma.io/service: 'catalog-api_commerce_svc_80'
-            version: v3
+

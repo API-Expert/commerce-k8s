@@ -39,7 +39,7 @@ configure_gateway() {
 }
 
 configure_service_mesh() {
-
+   
     kubectl --context=$CONTEXT delete circuitbreaker circuit-breaker-all-default
     kubectl --context=$CONTEXT delete retry retry-all-default
     kubectl --context=$CONTEXT delete timeout timeout-all-default

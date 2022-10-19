@@ -1,0 +1,57 @@
+
+apiVersion: kuma.io/v1alpha1
+kind: TrafficPermission
+mesh: default
+metadata:
+  name: metrics-permissions
+spec:
+  sources:
+    - match:
+       kuma.io/service: prometheus-server_mesh-observability_svc_80
+  destinations:
+    - match:
+       kuma.io/service: dataplane-metrics
+    - match:
+       kuma.io/service: "prometheus-alertmanager_mesh-observability_svc_80"
+    - match:
+       kuma.io/service: "prometheus-kube-state-metrics_mesh-observability_svc_80"
+    - match:
+       kuma.io/service: "prometheus-kube-state-metrics_mesh-observability_svc_81"
+    - match:
+       kuma.io/service: "prometheus-pushgateway_mesh-observability_svc_9091"
+---
+apiVersion: kuma.io/v1alpha1
+kind: TrafficPermission
+mesh: default
+metadata:
+  name: grafana-to-prometheus
+spec:
+   sources:
+   - match:
+      kuma.io/service: "grafana_mesh-observability_svc_80"
+   destinations:
+   - match:
+      kuma.io/service: "prometheus-server_mesh-observability_svc_80"
+
+---
+apiVersion: kuma.io/v1alpha1
+kind: TrafficPermission
+mesh: default
+metadata:
+  creationTimestamp: "2022-10-15T14:20:58Z"
+  generation: 1
+  name: allow-all-default
+  ownerReferences:
+  - apiVersion: kuma.io/v1alpha1
+    kind: Mesh
+    name: default
+    uid: aa37fe03-8b01-4dc6-945a-c2aa1f132238
+  resourceVersion: "987"
+  uid: fb9c05ca-e25c-4741-a75e-1d9adc0677ff
+spec:
+  destinations:
+  - match:
+      kuma.io/service: '*'
+  sources:
+  - match:
+      kuma.io/service: '*'

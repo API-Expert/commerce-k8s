@@ -342,3 +342,101 @@ kubectl apply -f k8s/kuma/resilience/circuit-breaker.yaml
 ```
 
 Execute algumas chamadas e observe que após o primeiro erro, a versão v3 é retirada do ar por 10 segundos e depois este tempo vai aumentando.
+
+
+## Timeout
+
+Antes de continuar remova o ```rate-limit``` do Kong para visualizar melhor os resultados:
+
+```sh
+kubectl -n commerce annotate KongConsumer marketing konghq.com/plugins=  --overwrite=true
+kubectl delete -f k8s/kong/traffic/throttling.yaml
+```
+
+
+O timeout é responsável por encerrar a conexão caso o tempo configurado seja antigido:
+
+```sh
+kubectl apply -f k8s/kuma/catalog-timeout.yaml
+```
+
+Faça algumas requisições a ```catalog``` e veja que agora está ocorrendo erro de código de status 504.
+
+Altere o tempo do ```timeout``` para 20s para não prejudicar os próximos testes
+
+## Fault Injection
+Antes de ativar a injeção de falhas, remova os ```pods``` da versão v3 para que as únicas falhas que ocorram sejam por injeção:
+
+```sh
+kubectl scale deploy catalogapi-v3 --replicas=0 -n commerce 
+```
+
+Ative a injeção de falhas:
+```sh
+kubectl apply -f k8s/kuma/fault-injection/fault-injection.yaml
+```
+
+Faça algumas requisições de POST de em ```products``` e repare que alguns não são concluídos com sucesso e outros demoram até 5 segundos para completar a requisição.
+
+Remove a injeção de falhas para não prejudicar os próximos passos:
+
+```sh
+kubectl delete -f k8s/kuma/fault-injection/fault-injection.yaml
+```
+
+# Throttling
+
+Ative o ```rate-limit``` para o serviço ```pricing```.
+
+```sh
+kubectl apply -f k8s/kuma/pricing-ratelimit.yaml 
+```
+
+Faça algumas requisições ao serviço ```pricing```e repare que após 3 requisições dentro de 1 minuto, o _service mesh_ retorna o status 429.
+
+Remova para não atrapalhar os próximos exemplos:
+
+```sh
+kubectl delete -f k8s/kuma/pricing-ratelimit.yaml 
+```
+
+## Load Balance
+Faça um balanceamento de carga das requisições entre a versão v1 e v2:
+
+```sh
+kubectl apply -f k8s/kuma/routing/load-balance.yaml
+```
+
+Usando a requisição ```items (balancing)``` da coleção ```catalog``` do Postman, faça requisições:
+* Sem o ```header stable:yes``` e sem o ```header canary:yes``` e observe o ```header version```no _response_.
+* Somente com um dos _headers_.
+* Com os dois _headers_.
+
+## Observabilidade e segurança
+Para que os dados de observabilidade sejam coletados e para que a autorização funcione, é necessário configurar o _service mesh_. Aplique as configurações:
+
+```sh
+kubectl --context=$CONTEXT apply -f k8s/kuma/mesh.yaml
+```
+Visite a página do _dashboard_ do _service mesh_ e veja as configurações já aplicadas.
+
+http://localhost:5681/gui/#/meshes/all
+
+## TLS Mutuo
+Cria um certificado de comunicação entre o serviços. (Ativado no passo anterior)
+
+## Autorização
+O _service mesh_ foi instalado de forma permissiva, ou seja, todo o tráfego é permitido a todos os serviços. 
+
+Remova a autorização padrão:
+
+```sh
+kubectl delete  trafficpermission allow-all-default    
+```
+
+Tente fazer as requisições e veja que não é mais possível o retorno agora é 503 e o corpo da requisição: 
+
+```
+upstream connect error or disconnect/reset before headers. reset reason: connection termination
+```
+

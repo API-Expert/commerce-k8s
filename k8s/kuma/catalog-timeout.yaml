@@ -1,0 +1,16 @@
+apiVersion: kuma.io/v1alpha1
+kind: Timeout
+mesh: default
+metadata:
+  name: catalog-timeout
+spec:
+  sources:
+    - match:
+        kuma.io/service: '*'
+  destinations:
+    - match:
+        kuma.io/service: 'catalog-api_commerce_svc_80'
+  conf:
+    http: 
+      requestTimeout: 20s
+    
