@@ -440,3 +440,29 @@ Tente fazer as requisições e veja que não é mais possível o retorno agora �
 upstream connect error or disconnect/reset before headers. reset reason: connection termination
 ```
 
+Ative as permissões de comunicação aos serviços:
+
+```sh
+kubectl apply -f k8s/kuma/traffic-permissions.yaml
+```
+
+Tente novamente fazer as requisições.
+
+## Logging
+
+Os _logs_ são ativados em duas etapas: No ```mesh``` ficam as configurações de destino dos logs (veja [mesh.yaml](k8s/kuma/mesh.yaml))
+
+Para ativar o _log_ por tráfego, execute:
+
+```sh
+kubectl apply -f k8s/kuma/traffic-log.yaml 
+```
+
+## Tracing
+O _tracing_ é ativado em duas etapas: No ```mesh``` ficam as configurações de destino do tracing (veja [mesh.yaml](k8s/kuma/mesh.yaml))
+
+Para ativar o _tracing_ por tráfego, execute:
+
+```sh
+kubectl apply -f k8s/kuma/traffic-log.yaml 
+```

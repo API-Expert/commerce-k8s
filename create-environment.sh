@@ -9,7 +9,8 @@ start_k8s () {
     minikube start \
         -p $CONTEXT \
         --cpus=4 \
-        --memory=4096 
+        --memory=4096 \
+        --embed-certs=true
 }
 
 install_service_mesh() {

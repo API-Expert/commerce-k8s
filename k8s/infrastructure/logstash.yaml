@@ -46,8 +46,10 @@ spec:
         configMap:
           name: logstash-configmap
           items:
-            - key: logstash.conf
-              path: logstash.conf
+            - key: kong.conf
+              path: kong.conf
+            - key: kuma.conf
+              path: kuma.conf
 ---
 kind: Service
 apiVersion: v1
@@ -58,6 +60,9 @@ spec:
   selector:
     app: logstash
   ports:
+  - protocol: TCP
+    port: 5044
+    targetPort: 5044
   - protocol: TCP
     port: 5044
     targetPort: 5044
@@ -72,7 +77,7 @@ data:
   logstash.yml: |
     http.host: "0.0.0.0"
     path.config: /usr/share/logstash/pipeline    
-  logstash.conf: |
+  kong.conf: |
     input {
       tcp {
         port => 5044
@@ -84,6 +89,25 @@ data:
       elasticsearch {
         ilm_enabled => false
         hosts => ["http://elasticsearch.elasticsearch.svc:9200"]
-        index => "logs"
+        index => "kong-logs"
       }
+
+      stdout {}
     }  
+  kuma.conf: |
+    input {
+      tcp {
+        port => 5045
+        codec => plain
+      }
+    } 
+    
+    output {
+      elasticsearch {
+        ilm_enabled => false
+        hosts => ["http://elasticsearch.elasticsearch.svc:9200"]
+        index => "kuma-logs"
+      }
+
+      stdout {}
+    }   

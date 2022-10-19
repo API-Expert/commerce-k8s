@@ -11,3 +11,5 @@ spec:
   destinations:
     - match:
         kuma.io/service: "*"
+  conf:
+    backend: logstash

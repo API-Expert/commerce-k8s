@@ -23,7 +23,7 @@ spec:
       - name: logstash
         type: tcp
         conf:
-          address: logstash.logstash.svc:5044
+          address: logstash.logstash.svc:5045
   metrics:
     enabledBackend: prometheus-1
     backends:
