@@ -11,7 +11,7 @@ spec:
     - match: 
         kuma.io/service: 'catalog-api_commerce_svc_80'
   conf:
-    interval: 10s
+    interval: 1s
     baseEjectionTime: 10s
     maxEjectionPercent: 100
     splitExternalAndLocalErrors: false 

@@ -235,7 +235,7 @@ Visualize os dados nos _dashboards_ importados.
 Visualize os dados de _tracing_ no Jaeger.
 
 # Service Mesh
-Antes de configurar o _service mesh_ é necessário preparar os serviços. Aplique as ```annotations``` abaxio para que os serviços sejam reconhecidos pelo ```service mesh```.
+Antes de configurar o _service mesh_ é necessário preparar os serviços. Aplique as ```annotations``` abaixo para que os serviços se comuniquem utilizando o protocolo ```http```.
 
 ```sh
 kubectl annotate service products-api -n commerce "80.service.kuma.io/protocol=http"  --overwrite=true
@@ -256,6 +256,10 @@ kubectl rollout restart deploy -n commerce
 ```
 
 Observe que agora os ```pods``` possuem 2 ```containers```:
+
+```
+kubectl get pods -n commerce
+```
 
 ```sh
 NAME                            READY   STATUS    RESTARTS   AGE
@@ -378,7 +382,7 @@ kubectl apply -f k8s/kuma/fault-injection/fault-injection.yaml
 
 Faça algumas requisições de POST de em ```products``` e repare que alguns não são concluídos com sucesso e outros demoram até 5 segundos para completar a requisição.
 
-Remove a injeção de falhas para não prejudicar os próximos passos:
+Remova a injeção de falhas para não prejudicar os próximos passos:
 
 ```sh
 kubectl delete -f k8s/kuma/fault-injection/fault-injection.yaml
@@ -422,7 +426,7 @@ Visite a página do _dashboard_ do _service mesh_ e veja as configurações já 
 
 http://localhost:5681/gui/#/meshes/all
 
-## TLS Mutuo
+## TLS Mútuo
 Cria um certificado de comunicação entre o serviços. (Ativado no passo anterior)
 
 ## Autorização
@@ -465,4 +469,15 @@ Para ativar o _tracing_ por tráfego, execute:
 
 ```sh
 kubectl apply -f k8s/kuma/traffic-log.yaml 
+```
+
+Configuração rápida do API Gateway
+
+```sh
+kubectl apply -f k8s/kong/global-plugins/observability
+kubectl apply -f k8s/kong/global-plugins/security/tls.yaml
+kubectl apply -f k8s/kong/traffic/routes.yaml 
+kubectl apply -f k8s/kong/global-plugins/security/key-auth.yaml
+kubectl apply -f k8s/kong/security/consumers-key-auth.yaml
+kubectl apply -f k8s/kong/security/consumers-acl.yaml
 ```

@@ -12,5 +12,5 @@ spec:
         kuma.io/service: 'catalog-api_commerce_svc_80'
   conf:
     http: 
-      requestTimeout: 20s
+      requestTimeout: 1ms
     

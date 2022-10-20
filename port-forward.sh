@@ -17,7 +17,7 @@ portforward() {
 
     if [ -f "$pidFile" ]
     then
-        kill $(cat $pidFile) `` > /dev/null
+        kill $(cat $pidFile)  > /dev/null
         rm $pidFile
     fi
 
