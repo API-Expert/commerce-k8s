@@ -244,6 +244,7 @@ kind: Service
 metadata:
   name: products-api
   namespace: commerce
+          
     
 spec:
   selector:
@@ -258,7 +259,8 @@ kind: Service
 metadata:
   name: pricing-api
   namespace: commerce
-    
+  
+ 
 spec:
   selector:
     app: pricingapi
@@ -272,7 +274,8 @@ kind: Service
 metadata:
   name: catalog-api
   namespace: commerce
-    
+  
+ 
 spec:
   selector:
     app: catalogapi

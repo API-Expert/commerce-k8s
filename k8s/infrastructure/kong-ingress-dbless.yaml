@@ -1467,12 +1467,10 @@ spec:
     port: 80
     protocol: TCP
     targetPort: 8000
-
   - name: proxy-ssl
     port: 443
     protocol: TCP
     targetPort: 8443
-
   selector:
     app: ingress-kong
   type: LoadBalancer

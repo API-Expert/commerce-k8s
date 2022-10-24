@@ -250,10 +250,15 @@ kubectl apply -f k8s/kong/security/consumers-acl.yaml
 ```
 
 ## Ativando o service mesh no namespace
-Para que o _service mesh_ seja instalado na aplicação é necessário que o namespace receba uma  ```annotation``` específica:
+Para que o _service mesh_ seja instalado na aplicação é necessário que o namespace receba uma  ```annotation``` para identificar que os ```pods``` farão parte do _service mesh_, assim como uma ```annotation``` nos serviços.
 
 ```sh
 kubectl annotate namespace commerce kuma.io/sidecar-injection=enabled --overwrite=true
+kubectl annotate service catalog-api -n commerce ingress.kubernetes.io/service-upstream=true --overwrite=true
+kubectl annotate service products-api -n commerce ingress.kubernetes.io/service-upstream=true --overwrite=true
+kubectl annotate service pricing-api -n commerce ingress.kubernetes.io/service-upstream=true --overwrite=true
+
+    
 ```
 
 E para completar a ativação os ```pods``` precisam ser recriados.
@@ -367,10 +372,12 @@ Faça algumas requisições a ```catalog``` e veja que agora está ocorrendo err
 Altere o tempo do ```timeout``` para 20s para não prejudicar os próximos testes
 
 ## Fault Injection
-Antes de ativar a injeção de falhas, remova os ```pods``` da versão v3 para que as únicas falhas que ocorram sejam por injeção:
+Antes de ativar a injeção de falhas, remova os ```pods``` da versão v3 para que as únicas falhas que ocorram sejam por injeção. Além disso, remova o ```timeout``` e o ```circuitbreaker```:
 
 ```sh
 kubectl scale deploy catalogapi-v3 --replicas=0 -n commerce 
+kubectl delete -f k8s/kuma/catalog-timeout.yaml
+kubectl delete -f k8s/kuma/resilience/circuit-breaker.yaml
 ```
 
 > Certifique-se de que o ```timeout``` aplicado anteriormente esteja 20s ou que ele tenha sido removido para não dificultar a visualização dos resultados.
@@ -431,7 +438,7 @@ O _service mesh_ foi instalado de forma permissiva, ou seja, todo o tráfego é 
 Remova a autorização padrão:
 
 ```sh
-kubectl delete  trafficpermission allow-all-default    
+kubectl delete  trafficpermission allow-all-traffic    
 ```
 
 Tente fazer as requisições e veja que não é mais possível o retorno agora é 503 e o corpo da requisição: 

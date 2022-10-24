@@ -7,7 +7,11 @@ spec:
   sources:
     - match:
         kuma.io/service: '*'
-        kuma.io/protocol: '*'
+        kuma.io/protocol: 'tcp'
+    - match:
+        kuma.io/service: '*'
+        kuma.io/protocol: 'http'
+
 
   destinations:
     - match:
@@ -16,8 +20,8 @@ spec:
   conf:        
     abort:
       httpStatus: 500
-      percentage: 30
+      percentage: 50
     delay:
-      percentage: 30
+      percentage: 50
       value: 5s
 
