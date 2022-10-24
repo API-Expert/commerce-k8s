@@ -276,14 +276,6 @@ productsapi-76f487bf4d-56gz2    2/2     Running   0          46s
 
 > Acesse a interface do _service mesh_ para visualizar as configurações: http://localhost:5681/gui/
 
-Execute chamadas pelo Postman e veja que agora não estão funcionando.
-
-```json
-{
-    "message": "An invalid response was received from the upstream server"
-}
-````
-
 ## Ativando as rotas 
 
 Antes de trabalhar com o roteamento é necessário ativar a versão 2 e 3 do ```catalog```.
@@ -381,12 +373,14 @@ Antes de ativar a injeção de falhas, remova os ```pods``` da versão v3 para q
 kubectl scale deploy catalogapi-v3 --replicas=0 -n commerce 
 ```
 
+> Certifique-se de que o ```timeout``` aplicado anteriormente esteja 20s ou que ele tenha sido removido para não dificultar a visualização dos resultados.
+
 Ative a injeção de falhas:
 ```sh
 kubectl apply -f k8s/kuma/fault-injection/fault-injection.yaml
 ```
 
-Faça algumas requisições de POST de em ```products``` e repare que alguns não são concluídos com sucesso e outros demoram até 5 segundos para completar a requisição.
+Faça algumas requisições em ```catalog```, ou ```POST``` em ```products``` ou ```pricing``` e repare que alguns não são concluídos com sucesso e outros demoram até 5 segundos para completar a requisição.
 
 Remova a injeção de falhas para não prejudicar os próximos passos:
 
@@ -399,7 +393,7 @@ kubectl delete -f k8s/kuma/fault-injection/fault-injection.yaml
 Ative o ```rate-limit``` para o serviço ```pricing```.
 
 ```sh
-kubectl apply -f k8s/kuma/pricing-to-catalog-ratelimit.yaml 
+kubectl apply -f k8s/kuma/pricing-ratelimit.yaml 
 ```
 
 Faça algumas requisições  ao serviço ```pricing```e repare que após 3 requisições dentro de 1 minuto, o _service mesh_ retorna o status 429.
@@ -424,12 +418,7 @@ Usando a requisição ```items (balancing)``` da coleção ```catalog``` do Post
 * Com os dois _headers_.
 
 ## Observabilidade e segurança
-Para que os dados de observabilidade sejam coletados e para que a autorização funcione, é necessário configurar o _service mesh_. Aplique as configurações:
-
-```sh
-kubectl apply -f k8s/kuma/mesh.yaml
-```
-Visite a página do _dashboard_ do _service mesh_ e veja as configurações já aplicadas.
+Visite a página do _dashboard_ do _service mesh_ e veja as configurações já aplicadas através do arquivo ```k8s/kuma/mesh.yaml```.
 
 http://localhost:5681/gui/#/meshes/all
 

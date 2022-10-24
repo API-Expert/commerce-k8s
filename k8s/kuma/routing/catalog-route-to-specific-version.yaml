@@ -2,7 +2,7 @@ apiVersion: kuma.io/v1alpha1
 kind: TrafficRoute
 mesh: default
 metadata: 
-  name: route-default-catalog
+  name: route-to-catalog
 spec: 
   sources: 
     - match: 
@@ -32,6 +32,3 @@ spec:
       kuma.io/service: 'catalog-api_commerce_svc_80'
       version: v1
    
-
-   
-      

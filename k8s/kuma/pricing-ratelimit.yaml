@@ -2,7 +2,7 @@ apiVersion: kuma.io/v1alpha1
 kind: RateLimit
 mesh: default
 metadata:
-  name: rate-limit-all-to-backend
+  name: pricing-ratelimit
 spec:
   sources:
     - match:

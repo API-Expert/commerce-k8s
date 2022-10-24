@@ -8,6 +8,7 @@ spec:
     - match:
         kuma.io/service: '*'
         kuma.io/protocol: '*'
+
   destinations:
     - match:
         kuma.io/service: 'catalog-api_commerce_svc_80'
@@ -15,8 +16,8 @@ spec:
   conf:        
     abort:
       httpStatus: 500
-      percentage: 10
+      percentage: 30
     delay:
-      percentage: 80
+      percentage: 30
       value: 5s
 
