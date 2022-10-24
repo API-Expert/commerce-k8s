@@ -235,13 +235,7 @@ Visualize os dados nos _dashboards_ importados.
 Visualize os dados de _tracing_ no Jaeger.
 
 # Service Mesh
-Antes de configurar o _service mesh_ é necessário preparar os serviços. Aplique as ```annotations``` abaixo para que os serviços se comuniquem utilizando o protocolo ```http```.
 
-```sh
-kubectl annotate service products-api -n commerce "80.service.kuma.io/protocol=http"  --overwrite=true
-kubectl annotate service pricing-api -n commerce "80.service.kuma.io/protocol=http" --overwrite=true
-kubectl annotate service catalog-api -n commerce "80.service.kuma.io/protocol=http" --overwrite=true
-```
 
 ## Ativando o service mesh no namespace
 Para que o _service mesh_ seja instalado na aplicação é necessário que o namespace receba uma  ```annotation``` específica:
@@ -393,10 +387,11 @@ kubectl delete -f k8s/kuma/fault-injection/fault-injection.yaml
 Ative o ```rate-limit``` para o serviço ```pricing```.
 
 ```sh
-kubectl apply -f k8s/kuma/pricing-ratelimit.yaml 
+kubectl apply -f k8s/kuma/pricing-to-catalog-ratelimit.yaml 
 ```
 
-Faça algumas requisições ao serviço ```pricing```e repare que após 3 requisições dentro de 1 minuto, o _service mesh_ retorna o status 429.
+Faça algumas requisições  ao serviço ```pricing```e repare que após 3 requisições dentro de 1 minuto, o _service mesh_ retorna o status 429.
+
 
 Remova para não atrapalhar os próximos exemplos:
 
@@ -420,7 +415,7 @@ Usando a requisição ```items (balancing)``` da coleção ```catalog``` do Post
 Para que os dados de observabilidade sejam coletados e para que a autorização funcione, é necessário configurar o _service mesh_. Aplique as configurações:
 
 ```sh
-kubectl --context=$CONTEXT apply -f k8s/kuma/mesh.yaml
+kubectl apply -f k8s/kuma/mesh.yaml
 ```
 Visite a página do _dashboard_ do _service mesh_ e veja as configurações já aplicadas.
 
@@ -468,10 +463,10 @@ O _tracing_ é ativado em duas etapas: No ```mesh``` ficam as configurações de
 Para ativar o _tracing_ por tráfego, execute:
 
 ```sh
-kubectl apply -f k8s/kuma/traffic-log.yaml 
+kubectl apply -f k8s/kuma/traffic-trace.yaml 
 ```
 
-Configuração rápida do API Gateway
+# Configuração rápida do API Gateway
 
 ```sh
 kubectl apply -f k8s/kong/global-plugins/observability
