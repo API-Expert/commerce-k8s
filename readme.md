@@ -236,6 +236,18 @@ Visualize os dados de _tracing_ no Jaeger.
 
 # Service Mesh
 
+## Configuração rápida do API Gateway
+
+Caso você tenha perdido o ambiente, você poderá utilizar os comandos abaixo para ter o básico do API Gateway para executar o Service Mesh
+
+```sh
+kubectl apply -f k8s/kong/global-plugins/observability
+kubectl apply -f k8s/kong/global-plugins/security/tls.yaml
+kubectl apply -f k8s/kong/traffic/routes.yaml 
+kubectl apply -f k8s/kong/global-plugins/security/key-auth.yaml
+kubectl apply -f k8s/kong/security/consumers-key-auth.yaml
+kubectl apply -f k8s/kong/security/consumers-acl.yaml
+```
 
 ## Ativando o service mesh no namespace
 Para que o _service mesh_ seja instalado na aplicação é necessário que o namespace receba uma  ```annotation``` específica:
@@ -466,13 +478,3 @@ Para ativar o _tracing_ por tráfego, execute:
 kubectl apply -f k8s/kuma/traffic-trace.yaml 
 ```
 
-# Configuração rápida do API Gateway
-
-```sh
-kubectl apply -f k8s/kong/global-plugins/observability
-kubectl apply -f k8s/kong/global-plugins/security/tls.yaml
-kubectl apply -f k8s/kong/traffic/routes.yaml 
-kubectl apply -f k8s/kong/global-plugins/security/key-auth.yaml
-kubectl apply -f k8s/kong/security/consumers-key-auth.yaml
-kubectl apply -f k8s/kong/security/consumers-acl.yaml
-```
