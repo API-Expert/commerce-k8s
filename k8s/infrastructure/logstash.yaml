@@ -63,9 +63,11 @@ spec:
   - protocol: TCP
     port: 5044
     targetPort: 5044
+    name: kong-listen
   - protocol: TCP
-    port: 5044
-    targetPort: 5044
+    port: 5045
+    targetPort: 5045
+    name: kuma-listen
   type: ClusterIP
 ---
 apiVersion: v1

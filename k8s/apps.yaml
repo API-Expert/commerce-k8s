@@ -251,6 +251,7 @@ spec:
   ports:
     - protocol: TCP
       port: 80
+      appProtocol: http #used to tip kuma what protocol should be
 ---
 apiVersion: v1
 kind: Service
@@ -264,6 +265,7 @@ spec:
   ports:
     - protocol: TCP
       port: 80
+      appProtocol: http 
 ---
 apiVersion: v1
 kind: Service
@@ -277,3 +279,4 @@ spec:
   ports:
     - protocol: TCP
       port: 80
+      appProtocol: http 

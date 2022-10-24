@@ -17,8 +17,16 @@ portforward() {
 
     if [ -f "$pidFile" ]
     then
-        kill $(cat $pidFile)  > /dev/null
+
+        pid=$(cat $pidFile)
+        
+        if [ $? -eq 0 ]
+        then
+            kill $pid   > /dev/null
+        fi
+
         rm $pidFile
+   
     fi
 
     kubectl --context=$CONTEXT  \
@@ -37,9 +45,12 @@ kubectl --context=$CONTEXT wait pods -n kong -l app=ingress-kong --for condition
 kubectl --context=$CONTEXT wait pods -n mesh-observability -l app=grafana --for condition=Ready --timeout=90s
 kubectl --context=$CONTEXT wait pods -n mesh-observability -l app=jaeger --for condition=Ready --timeout=90s
 
+echo
 
 
 portforward kuma-control-plane kuma-system 5681 5681
 portforward kong-proxy kong 8443 443
 portforward jaeger-query mesh-observability 8080 80
 portforward grafana mesh-observability 3000 80
+
+exit 0

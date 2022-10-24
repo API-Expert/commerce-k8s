@@ -11,7 +11,5 @@ config:
   sample_ratio: 1 #envia todos os requests para o zipkin
   include_credential: true
   traceid_byte_count: 16
-  header_type: preserve
-  default_header_type: b3
-  tags_header: Zipkin-Tags
+  header_type: b3
 plugin: zipkin
