@@ -2,20 +2,7 @@ apiVersion: kuma.io/v1alpha1
 kind: TrafficPermission
 mesh: default
 metadata:
-  name: kong-to-catalog
-spec:
-  sources:
-  - match:
-      kuma.io/service: kong-proxy_kong_svc_80
-  destinations:
-  - match:
-      kuma.io/service: 'catalog-api_commerce_svc_80'
----
-apiVersion: kuma.io/v1alpha1
-kind: TrafficPermission
-mesh: default
-metadata:
-  name: kong-to-products
+  name: to-products
 spec:
   sources:
   - match:
@@ -28,7 +15,7 @@ apiVersion: kuma.io/v1alpha1
 kind: TrafficPermission
 mesh: default
 metadata:
-  name: kong-to-pricing
+  name: to-pricing
 spec:
   sources:
   - match:
@@ -41,11 +28,15 @@ apiVersion: kuma.io/v1alpha1
 kind: TrafficPermission
 mesh: default
 metadata:
-  name: all-to-catalog
+  name: to-catalog
 spec:
   sources:
   - match:
-      kuma.io/service: '*'
+      kuma.io/service: 'products-api_commerce_svc_80'
+  - match:
+      kuma.io/service: 'pricing-api_commerce_svc_80'
+  - match:
+      kuma.io/service: kong-proxy_kong_svc_80
   destinations:
   - match:
       kuma.io/service: 'catalog-api_commerce_svc_80'
