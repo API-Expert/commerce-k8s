@@ -108,6 +108,9 @@
 				},
 				{
 					"name": "items (balancing)",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
 					"request": {
 						"method": "GET",
 						"header": [
@@ -121,6 +124,39 @@
 							{
 								"key": "stable",
 								"value": "yes",
+								"description": "force stable usage",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{catalogBaseUrl}}/catalog/items",
+							"host": [
+								"{{catalogBaseUrl}}"
+							],
+							"path": [
+								"catalog",
+								"items"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "items (specific version)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "canary",
+								"value": "yes",
+								"description": "it does not work due API Gateway header removal",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "version",
+								"value": "v1",
 								"description": "force stable usage",
 								"type": "text"
 							}
@@ -300,7 +336,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"productId\":\"00000000-0000-0000-0000-0000000000000003\",\n    \"price\":123.3\n}",
+							"raw": "{\n    \"productId\":\"fd1412ab-5033-4d38-bf30-4f533bab2000\",\n    \"price\":123.3\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -391,6 +427,21 @@
 				{
 					"name": "products incorrect apikey",
 					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "external-api-key",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "apiKey",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {

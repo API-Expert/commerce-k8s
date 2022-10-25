@@ -24,15 +24,15 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 6,
-  "iteration": 1666048914610,
+  "id": 11,
+  "iteration": 1666667567536,
   "links": [],
   "liveNow": false,
   "panels": [
     {
       "datasource": {
         "type": "elasticsearch",
-        "uid": "_q3bfJIVk"
+        "uid": "R7HRODH4k"
       },
       "fieldConfig": {
         "defaults": {
@@ -82,21 +82,27 @@
       "targets": [
         {
           "alias": "",
-          "bucketAggs": [],
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "auto"
+              },
+              "type": "date_histogram"
+            }
+          ],
           "datasource": {
             "type": "elasticsearch",
-            "uid": "_q3bfJIVk"
+            "uid": "R7HRODH4k"
           },
           "metrics": [
             {
-              "id": "3",
-              "settings": {
-                "size": "500"
-              },
-              "type": "raw_data"
+              "id": "1",
+              "type": "logs"
             }
           ],
-          "query": "consumer.username.keyword:$consumer AND service.name.keyword:$service",
+          "query": "",
           "refId": "A",
           "timeField": "@timestamp"
         }
@@ -110,16 +116,41 @@
           }
         },
         {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "config": {
+                  "id": "notEqual",
+                  "options": {
+                    "value": "kuma"
+                  }
+                },
+                "fieldName": "by"
+              }
+            ],
+            "match": "all",
+            "type": "include"
+          }
+        },
+        {
           "id": "organize",
           "options": {
             "excludeByName": {
               "@version": true,
               "_id": true,
               "_index": true,
+              "_source": true,
               "_type": true,
               "authenticated_entity.id": true,
+              "by": true,
+              "bytes_received": true,
+              "bytes_sent": true,
               "consumer.created_at": true,
               "consumer.id": true,
+              "destination": true,
+              "destination_address": true,
+              "duration_millis": true,
               "highlight": true,
               "latencies.request": true,
               "port": true,
@@ -189,12 +220,15 @@
               "service.write_timeout": true,
               "service.ws_id": true,
               "sort": true,
+              "source": true,
+              "source_address": true,
               "started_at": true,
               "tries": true
             },
             "indexByName": {},
             "renameByName": {
-              "@timestamp": ""
+              "@timestamp": "",
+              "started_at": ""
             }
           }
         }
@@ -218,52 +252,6 @@
         "name": "Filters",
         "skipUrlSync": false,
         "type": "adhoc"
-      },
-      {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
-        "datasource": {
-          "type": "elasticsearch",
-          "uid": "_q3bfJIVk"
-        },
-        "definition": "{\"find\": \"terms\", \"field\": \"consumer.username.keyword\"}",
-        "hide": 0,
-        "includeAll": true,
-        "multi": false,
-        "name": "consumer",
-        "options": [],
-        "query": "{\"find\": \"terms\", \"field\": \"consumer.username.keyword\"}",
-        "refresh": 2,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
-        "type": "query"
-      },
-      {
-        "current": {
-          "selected": false,
-          "text": "commerce.products-api.pnum-80",
-          "value": "commerce.products-api.pnum-80"
-        },
-        "datasource": {
-          "type": "elasticsearch",
-          "uid": "_q3bfJIVk"
-        },
-        "definition": "{\"find\": \"terms\", \"field\": \"service.name.keyword\"}",
-        "hide": 0,
-        "includeAll": true,
-        "multi": false,
-        "name": "service",
-        "options": [],
-        "query": "{\"find\": \"terms\", \"field\": \"service.name.keyword\"}",
-        "refresh": 2,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
-        "type": "query"
       }
     ]
   },
@@ -275,6 +263,6 @@
   "timezone": "",
   "title": "Kong logs",
   "uid": "d6rdecSVz",
-  "version": 17,
+  "version": 2,
   "weekStart": ""
 }

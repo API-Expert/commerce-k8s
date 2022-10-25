@@ -44,6 +44,7 @@ configure_service_mesh() {
     kubectl --context=$CONTEXT apply -f k8s/kuma/mesh.yaml
     kubectl --context=$CONTEXT apply -f k8s/kuma/external-service.yaml
     kubectl --context=$CONTEXT apply -f k8s/kuma/observability-traffic-permissions.yaml
+    
     kubectl --context=$CONTEXT delete circuitbreaker circuit-breaker-all-default
     kubectl --context=$CONTEXT delete retry retry-all-default
     kubectl --context=$CONTEXT delete timeout timeout-all-default

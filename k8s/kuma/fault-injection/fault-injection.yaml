@@ -20,8 +20,8 @@ spec:
   conf:        
     abort:
       httpStatus: 500
-      percentage: 50
+      percentage: 25
     delay:
-      percentage: 50
+      percentage: 25
       value: 5s
 

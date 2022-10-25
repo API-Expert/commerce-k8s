@@ -13,7 +13,7 @@ spec:
   conf:
     http:
       requests: 3
-      interval: 10s
+      interval: 1m
       onRateLimit:
         status: 429
         headers:

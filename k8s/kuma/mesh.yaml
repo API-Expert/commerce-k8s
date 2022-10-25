@@ -22,6 +22,8 @@ spec:
     backends:
       - name: logstash
         type: tcp
+        format: '{"by":"kuma","start_time": "%START_TIME%", "source": "%KUMA_SOURCE_SERVICE%", "destination": "%KUMA_DESTINATION_SERVICE%", "source_address": "%KUMA_SOURCE_ADDRESS_WITHOUT_PORT%", "destination_address": "%UPSTREAM_HOST%", "duration_millis": "%DURATION%", "bytes_received": "%BYTES_RECEIVED%", "bytes_sent": "%BYTES_SENT%"}'
+
         conf:
           address: logstash.logstash.svc:5045
   metrics:

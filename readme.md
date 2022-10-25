@@ -369,7 +369,12 @@ kubectl apply -f k8s/kuma/catalog-timeout.yaml
 
 Faça algumas requisições a ```catalog``` e veja que agora está ocorrendo erro de código de status 504.
 
-Altere o tempo do ```timeout``` para 20s para não prejudicar os próximos testes
+
+Remova o ```timeout```para não prejudicar os próximos testes
+
+```sh
+kubectl delete -f k8s/kuma/catalog-timeout.yaml
+```
 
 ## Fault Injection
 Antes de ativar a injeção de falhas, remova os ```pods``` da versão v3 para que as únicas falhas que ocorram sejam por injeção. Além disso, remova o ```timeout``` e o ```circuitbreaker```:
@@ -380,7 +385,7 @@ kubectl delete -f k8s/kuma/catalog-timeout.yaml
 kubectl delete -f k8s/kuma/resilience/circuit-breaker.yaml
 ```
 
-> Certifique-se de que o ```timeout``` aplicado anteriormente esteja 20s ou que ele tenha sido removido para não dificultar a visualização dos resultados.
+> Certifique-se de que o ```timeout``` tenha sido removido para não dificultar a visualização dos resultados.
 
 Ative a injeção de falhas:
 ```sh
@@ -438,7 +443,7 @@ O _service mesh_ foi instalado de forma permissiva, ou seja, todo o tráfego é 
 Remova a autorização padrão:
 
 ```sh
-kubectl delete  trafficpermission allow-all-traffic    
+kubectl delete  trafficpermission allow-all-default    
 ```
 
 Tente fazer as requisições e veja que não é mais possível o retorno agora é 503 e o corpo da requisição: 
@@ -465,6 +470,8 @@ Para ativar o _log_ por tráfego, execute:
 kubectl apply -f k8s/kuma/traffic-log.yaml 
 ```
 
+Execute algumas requisições e visualizar o _dashboard_ no ```Grafana``` (http://localhost:3000)
+
 ## Tracing
 O _tracing_ é ativado em duas etapas: No ```mesh``` ficam as configurações de destino do tracing (veja [mesh.yaml](k8s/kuma/mesh.yaml))
 
@@ -474,3 +481,4 @@ Para ativar o _tracing_ por tráfego, execute:
 kubectl apply -f k8s/kuma/traffic-trace.yaml 
 ```
 
+Execute algumas requisições e visualizar o _tracing_ no ```Jaeger``` (http://localhost:8080)
