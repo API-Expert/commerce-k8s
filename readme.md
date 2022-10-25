@@ -21,6 +21,11 @@ Commerce é um ambiente para estudar ferramentas de infraestrutura como API Gate
 ./create-environment.sh
 ```
 
+Para Windows:
+```powershell
+./create-environment.ps1
+```
+
 > A instalação leva aproximadamente 5 minutos
 
 4. Execute o script ```port-forward.sh``` para criar uma ligação entre a porta local e a porta do serviço no _cluster_ ```kubernetes```.
@@ -31,6 +36,10 @@ Commerce é um ambiente para estudar ferramentas de infraestrutura como API Gate
     kong-proxy - 8443
     jaeger-query - 8080
     grafana - 3000
+    ```
+    Para Windows:
+    ```powershell
+    ./port-forward.ps1
     ```
 
 5. Selecione o contexto ```commerce``` para o ```kubectl```:
