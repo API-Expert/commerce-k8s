@@ -14,10 +14,10 @@ start_k8s () {
 }
 
 install_service_mesh() {
-    kumactl install control-plane | kubectl apply --context $CONTEXT -f -
+    kubectl --context=$CONTEXT apply -f k8s/infrastructure/kuma/kuma-control-plane.yaml
     kubectl --context=$CONTEXT wait pods -n kuma-system -l app=kuma-control-plane --for condition=Ready --timeout=90s
-    kumactl install observability --components grafana,prometheus,jaeger | kubectl apply --context $CONTEXT -f -
-
+    kubectl --context=$CONTEXT apply -f k8s/infrastructure/kuma/kuma-observability.yaml
+    
 }
 
 install_apps(){

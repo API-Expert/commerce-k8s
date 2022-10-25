@@ -12,7 +12,7 @@ Commerce é um ambiente para estudar ferramentas de infraestrutura como API Gate
     kubectl|https://kubernetes.io/docs/tasks/tools/
     minikube|https://minikube.sigs.k8s.io/docs/start/
     Docker|https://docs.docker.com/engine/install/
-    Kuma|https://kuma.io/install/latest/
+
 
 2. Instale o certificado ```tls/localhost-ca.pem``` no Postman ou ```tls/localhost-ca.key``` no computador local.
 

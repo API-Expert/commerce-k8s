@@ -1,281 +1,301 @@
 {
-    "annotations": {
-      "list": [
-        {
-          "builtIn": 1,
-          "datasource": {
-            "type": "grafana",
-            "uid": "-- Grafana --"
-          },
-          "enable": true,
-          "hide": true,
-          "iconColor": "rgba(0, 211, 255, 1)",
-          "name": "Annotations & Alerts",
-          "target": {
-            "limit": 100,
-            "matchAny": false,
-            "tags": [],
-            "type": "dashboard"
-          },
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
           "type": "dashboard"
+        },
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 9,
+  "iteration": 1666704998261,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": {
+        "type": "elasticsearch",
+        "uid": "ub5LpdN4k"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "displayMode": "auto",
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 28,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 4,
+      "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "8.5.2",
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "auto"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "ub5LpdN4k"
+          },
+          "metrics": [
+            {
+              "id": "1",
+              "type": "logs"
+            }
+          ],
+          "query": "",
+          "refId": "A",
+          "timeField": "@timestamp"
         }
-      ]
-    },
-    "editable": true,
-    "fiscalYearStartMonth": 0,
-    "graphTooltip": 0,
-    "id": 10,
-    "iteration": 1666667453658,
-    "links": [],
-    "liveNow": false,
-    "panels": [
+      ],
+      "title": "Panel Title",
+      "transformations": [
+        {
+          "id": "seriesToColumns",
+          "options": {
+            "byField": "@timestamp"
+          }
+        },
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "config": {
+                  "id": "equal",
+                  "options": {
+                    "value": "kuma"
+                  }
+                },
+                "fieldName": "by"
+              }
+            ],
+            "match": "all",
+            "type": "include"
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "@version": true,
+              "_id": true,
+              "_index": true,
+              "_source": true,
+              "_type": true,
+              "authenticated_entity.id": true,
+              "by": true,
+              "client_ip": true,
+              "consumer.created_at": true,
+              "consumer.id": true,
+              "consumer.username": true,
+              "highlight": true,
+              "host": false,
+              "latencies.kong": true,
+              "latencies.proxy": true,
+              "latencies.request": true,
+              "port": true,
+              "request.headers.accept": true,
+              "request.headers.accept-encoding": true,
+              "request.headers.apikey": true,
+              "request.headers.connection": true,
+              "request.headers.content-length": true,
+              "request.headers.content-type": true,
+              "request.headers.host": true,
+              "request.headers.postman-token": true,
+              "request.headers.stable": true,
+              "request.headers.user-agent": true,
+              "request.headers.version": true,
+              "request.headers.x-b3-parentspanid": true,
+              "request.headers.x-b3-sampled": true,
+              "request.headers.x-b3-spanid": true,
+              "request.headers.x-b3-traceid": true,
+              "request.headers.x-consumer-groups": true,
+              "request.headers.x-consumer-id": true,
+              "request.headers.x-consumer-username": true,
+              "request.headers.x-credential-identifier": true,
+              "request.method": true,
+              "request.querystring": true,
+              "request.size": true,
+              "request.tls.cipher": true,
+              "request.tls.client_verify": true,
+              "request.tls.version": true,
+              "request.uri": true,
+              "request.url": true,
+              "response.headers.age": true,
+              "response.headers.connection": true,
+              "response.headers.content-length": true,
+              "response.headers.content-type": true,
+              "response.headers.date": true,
+              "response.headers.location": true,
+              "response.headers.ratelimit-limit": true,
+              "response.headers.ratelimit-remaining": true,
+              "response.headers.ratelimit-reset": true,
+              "response.headers.server": true,
+              "response.headers.transfer-encoding": true,
+              "response.headers.version": true,
+              "response.headers.via": true,
+              "response.headers.x-cache-key": true,
+              "response.headers.x-cache-status": true,
+              "response.headers.x-envoy-upstream-service-time": true,
+              "response.headers.x-kong-proxy-latency": true,
+              "response.headers.x-kong-response-latency": true,
+              "response.headers.x-kong-upstream-latency": true,
+              "response.headers.x-ratelimit-limit-minute": true,
+              "response.headers.x-ratelimit-remaining-minute": true,
+              "response.size": true,
+              "response.status": true,
+              "route.created_at": true,
+              "route.https_redirect_status_code": true,
+              "route.id": true,
+              "route.name": true,
+              "route.path_handling": true,
+              "route.paths": true,
+              "route.preserve_host": true,
+              "route.protocols": true,
+              "route.regex_priority": true,
+              "route.request_buffering": true,
+              "route.response_buffering": true,
+              "route.service.id": true,
+              "route.strip_path": true,
+              "route.updated_at": true,
+              "route.ws_id": true,
+              "service.connect_timeout": true,
+              "service.created_at": true,
+              "service.enabled": true,
+              "service.host": true,
+              "service.id": true,
+              "service.name": true,
+              "service.path": true,
+              "service.port": true,
+              "service.protocol": true,
+              "service.read_timeout": true,
+              "service.retries": true,
+              "service.updated_at": true,
+              "service.write_timeout": true,
+              "service.ws_id": true,
+              "sort": true,
+              "start_time": true,
+              "started_at": true,
+              "tries": true,
+              "upstream_uri": true
+            },
+            "indexByName": {
+              "@timestamp": 0,
+              "@version": 1,
+              "_id": 2,
+              "_index": 3,
+              "_source": 4,
+              "_type": 5,
+              "by": 6,
+              "bytes_received": 12,
+              "bytes_sent": 9,
+              "destination": 10,
+              "destination_address": 11,
+              "duration_millis": 13,
+              "highlight": 14,
+              "host": 15,
+              "port": 16,
+              "sort": 17,
+              "source": 8,
+              "source_address": 7,
+              "start_time": 18
+            },
+            "renameByName": {
+              "@timestamp": ""
+            }
+          }
+        }
+      ],
+      "type": "table"
+    }
+  ],
+  "refresh": "",
+  "schemaVersion": 36,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": [
       {
         "datasource": {
           "type": "elasticsearch",
-          "uid": "R7HRODH4k"
+          "uid": "u03fq5IVz"
         },
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "thresholds"
-            },
-            "custom": {
-              "align": "auto",
-              "displayMode": "auto",
-              "inspect": false
-            },
-            "mappings": [],
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": null
-                },
-                {
-                  "color": "red",
-                  "value": 80
-                }
-              ]
-            }
-          },
-          "overrides": []
-        },
-        "gridPos": {
-          "h": 28,
-          "w": 24,
-          "x": 0,
-          "y": 0
-        },
-        "id": 4,
-        "options": {
-          "footer": {
-            "fields": "",
-            "reducer": [
-              "sum"
-            ],
-            "show": false
-          },
-          "showHeader": true
-        },
-        "pluginVersion": "8.5.2",
-        "targets": [
-          {
-            "alias": "",
-            "bucketAggs": [
-              {
-                "field": "@timestamp",
-                "id": "2",
-                "settings": {
-                  "interval": "auto"
-                },
-                "type": "date_histogram"
-              }
-            ],
-            "datasource": {
-              "type": "elasticsearch",
-              "uid": "R7HRODH4k"
-            },
-            "metrics": [
-              {
-                "id": "1",
-                "type": "logs"
-              }
-            ],
-            "query": "",
-            "refId": "A",
-            "timeField": "@timestamp"
-          }
-        ],
-        "title": "Panel Title",
-        "transformations": [
-          {
-            "id": "seriesToColumns",
-            "options": {
-              "byField": "@timestamp"
-            }
-          },
-          {
-            "id": "filterByValue",
-            "options": {
-              "filters": [
-                {
-                  "config": {
-                    "id": "equal",
-                    "options": {
-                      "value": "kuma"
-                    }
-                  },
-                  "fieldName": "by"
-                }
-              ],
-              "match": "all",
-              "type": "include"
-            }
-          },
-          {
-            "id": "organize",
-            "options": {
-              "excludeByName": {
-                "@version": true,
-                "_id": true,
-                "_index": true,
-                "_source": true,
-                "_type": true,
-                "authenticated_entity.id": true,
-                "by": true,
-                "consumer.created_at": true,
-                "consumer.id": true,
-                "highlight": true,
-                "host": false,
-                "latencies.request": true,
-                "port": true,
-                "request.headers.accept": true,
-                "request.headers.accept-encoding": true,
-                "request.headers.connection": true,
-                "request.headers.host": false,
-                "request.headers.postman-token": true,
-                "request.headers.stable": true,
-                "request.headers.user-agent": false,
-                "request.headers.x-b3-parentspanid": true,
-                "request.headers.x-b3-sampled": true,
-                "request.headers.x-b3-spanid": true,
-                "request.headers.x-b3-traceid": true,
-                "request.headers.x-consumer-groups": true,
-                "request.headers.x-consumer-id": true,
-                "request.headers.x-credential-identifier": true,
-                "request.querystring": false,
-                "request.tls.cipher": true,
-                "request.tls.client_verify": true,
-                "request.tls.version": true,
-                "request.url": true,
-                "response.headers.age": true,
-                "response.headers.connection": true,
-                "response.headers.content-length": true,
-                "response.headers.content-type": true,
-                "response.headers.date": true,
-                "response.headers.ratelimit-limit": true,
-                "response.headers.ratelimit-remaining": true,
-                "response.headers.ratelimit-reset": true,
-                "response.headers.server": true,
-                "response.headers.transfer-encoding": true,
-                "response.headers.version": true,
-                "response.headers.via": true,
-                "response.headers.x-cache-key": true,
-                "response.headers.x-cache-status": true,
-                "response.headers.x-envoy-upstream-service-time": true,
-                "response.headers.x-kong-proxy-latency": true,
-                "response.headers.x-kong-upstream-latency": true,
-                "response.headers.x-ratelimit-limit-minute": true,
-                "response.headers.x-ratelimit-remaining-minute": true,
-                "response.size": true,
-                "route.created_at": true,
-                "route.https_redirect_status_code": true,
-                "route.id": true,
-                "route.name": true,
-                "route.path_handling": true,
-                "route.paths": true,
-                "route.preserve_host": true,
-                "route.protocols": true,
-                "route.regex_priority": true,
-                "route.request_buffering": true,
-                "route.response_buffering": true,
-                "route.service.id": true,
-                "route.strip_path": true,
-                "route.updated_at": true,
-                "route.ws_id": true,
-                "service.connect_timeout": true,
-                "service.created_at": true,
-                "service.enabled": true,
-                "service.host": false,
-                "service.id": true,
-                "service.path": true,
-                "service.read_timeout": true,
-                "service.retries": true,
-                "service.updated_at": true,
-                "service.write_timeout": true,
-                "service.ws_id": true,
-                "sort": true,
-                "started_at": true,
-                "tries": true
-              },
-              "indexByName": {
-                "@timestamp": 0,
-                "@version": 1,
-                "_id": 2,
-                "_index": 3,
-                "_source": 4,
-                "_type": 5,
-                "by": 6,
-                "bytes_received": 12,
-                "bytes_sent": 9,
-                "destination": 10,
-                "destination_address": 11,
-                "duration_millis": 13,
-                "highlight": 14,
-                "host": 15,
-                "port": 16,
-                "sort": 17,
-                "source": 8,
-                "source_address": 7,
-                "start_time": 18
-              },
-              "renameByName": {
-                "@timestamp": ""
-              }
-            }
-          }
-        ],
-        "type": "table"
+        "filters": [],
+        "hide": 0,
+        "name": "Filters",
+        "skipUrlSync": false,
+        "type": "adhoc"
       }
-    ],
-    "refresh": "",
-    "schemaVersion": 36,
-    "style": "dark",
-    "tags": [],
-    "templating": {
-      "list": [
-        {
-          "datasource": {
-            "type": "elasticsearch",
-            "uid": "u03fq5IVz"
-          },
-          "filters": [],
-          "hide": 0,
-          "name": "Filters",
-          "skipUrlSync": false,
-          "type": "adhoc"
-        }
-      ]
-    },
-    "time": {
-      "from": "now-6h",
-      "to": "now"
-    },
-    "timepicker": {},
-    "timezone": "",
-    "title": "Kuma logs",
-    "uid": "bAMgvDHVz",
-    "version": 2,
-    "weekStart": ""
-  }
+    ]
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "Kuma logs",
+  "uid": "bAMgvDHVz",
+  "version": 2,
+  "weekStart": ""
+}
