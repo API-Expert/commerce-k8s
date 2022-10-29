@@ -491,3 +491,14 @@ kubectl apply -f k8s/kuma/traffic-trace.yaml
 ```
 
 Execute algumas requisições e visualizar o _tracing_ no ```Jaeger``` (http://localhost:8080)
+
+# Configuration Manager
+
+Capture o nome do ```pod``` do Vault e inicie um terminal com ele:
+```bash
+VAULTPOD=$(kubectl get pods -n vault -l app=vault -o jsonpath="{.items[0].metadata.name}")
+kubectl exec -it $VAULTPOD -n vault -- sh
+```
+
+Após isso, todos comandos que serão executados no Vault devem seguir a mesma estrutura:
+
