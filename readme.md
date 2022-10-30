@@ -521,7 +521,7 @@ kubectl scale deploy catalogapi-v2 --replicas=0 -n commerce
 kubectl scale deploy catalogapi-v3 --replicas=0 -n commerce 
 ```
 
-Capture o nome do ```pod``` do Vault e inicie um terminal com ele:
+Abra um sessão com o ```pod``` do Vault:
 ```bash
 kubectl exec -it vault-0 -n vault -- sh
 ```
