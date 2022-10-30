@@ -494,6 +494,33 @@ Execute algumas requisições e visualizar o _tracing_ no ```Jaeger``` (http://l
 
 # Configuration Manager
 
+## Preparando o ambiente
+
+Utilize os comandos abaixo para configurar o _service mesh_ e o _api gateway_.
+
+```sh
+kubectl apply -f k8s/kong/global-plugins/observability
+kubectl apply -f k8s/kong/global-plugins/security/tls.yaml
+kubectl apply -f k8s/kong/traffic/routes.yaml 
+kubectl apply -f k8s/kong/global-plugins/security/key-auth.yaml
+kubectl apply -f k8s/kong/security/consumers-key-auth.yaml
+kubectl apply -f k8s/kong/security/consumers-acl.yaml
+kubectl annotate namespace commerce kuma.io/sidecar-injection=enabled --overwrite=true
+kubectl annotate service catalog-api -n commerce ingress.kubernetes.io/service-upstream=true --overwrite=true
+kubectl annotate service products-api -n commerce ingress.kubernetes.io/service-upstream=true --overwrite=true
+kubectl annotate service pricing-api -n commerce ingress.kubernetes.io/service-upstream=true --overwrite=true
+kubectl rollout restart deploy -n commerce
+    
+```
+
+Deixe somente a versão ```v1``` do ```catalog``` em funcionamento:
+
+```sh
+kubectl scale deploy catalogapi-v1 --replicas=1 -n commerce 
+kubectl scale deploy catalogapi-v2 --replicas=0 -n commerce 
+kubectl scale deploy catalogapi-v3 --replicas=0 -n commerce 
+```
+
 Capture o nome do ```pod``` do Vault e inicie um terminal com ele:
 ```bash
 kubectl exec -it vault-0 -n vault -- sh
