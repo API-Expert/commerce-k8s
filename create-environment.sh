@@ -28,6 +28,7 @@ install_apps(){
 
 install_infrastructure() {
     kubectl --context=$CONTEXT apply -f k8s/infrastructure
+    kubectl --context=$CONTEXT apply -f k8s/infrastructure/vault
 }
 
 install_gateway() {
@@ -65,6 +66,7 @@ upload_images() {
     minikube -p $CONTEXT image load docker.io/patrickreinan/commerce-pricingapi:latest
     minikube -p $CONTEXT image load docker.io/patrickreinan/commerce-catalogapi:latest
 }
+
 
 start_k8s
 upload_images

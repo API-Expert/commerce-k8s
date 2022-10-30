@@ -28,6 +28,7 @@ function Install-Apps(){
 
 function Install-Infrastructure() {
     kubectl --context=$env:CONTEXT apply -f k8s/infrastructure
+    kubectl --context=$env:CONTEXT apply -f k8s/infrastructure/vault
 }
 
 function Install-Gateway() {

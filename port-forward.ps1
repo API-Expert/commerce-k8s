@@ -14,3 +14,5 @@ Write-Host jaeger: 8080
 kubectl --context=$env:CONTEXT port-forward -n mesh-observability svc/jaeger-query 8080:80  &
 Write-Host grafana: 3000
 kubectl --context=$env:CONTEXT port-forward -n mesh-observability svc/grafana 3000:80 &
+Write-Host vault: 8200
+kubectl --context=$env:CONTEXT port-forward -n vault svc/vault 8200:8200 &

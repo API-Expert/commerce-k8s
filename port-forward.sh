@@ -44,6 +44,7 @@ kubectl --context=$CONTEXT wait pods -n kuma-system -l app=kuma-control-plane --
 kubectl --context=$CONTEXT wait pods -n kong -l app=ingress-kong --for condition=Ready --timeout=90s
 kubectl --context=$CONTEXT wait pods -n mesh-observability -l app=grafana --for condition=Ready --timeout=90s
 kubectl --context=$CONTEXT wait pods -n mesh-observability -l app=jaeger --for condition=Ready --timeout=90s
+kubectl --context=$CONTEXT wait pods -n vault -l app=vault --for condition=Ready --timeout=90s
 
 echo
 
@@ -52,5 +53,6 @@ portforward kuma-control-plane kuma-system 5681 5681
 portforward kong-proxy kong 8443 443
 portforward jaeger-query mesh-observability 8080 80
 portforward grafana mesh-observability 3000 80
+portforward vault vault 8200 8200
 
 exit 0
