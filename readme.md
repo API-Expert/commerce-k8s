@@ -562,7 +562,8 @@ Sealed                  false
 Faça o login no Vault usando o root token presente no arquivo ``cluster-keys.json``
 
 ```sh
-vault login <token>
+TOKEN=<root-token>
+vault login $TOKEN
 ```
 
 A mensagem de saída deve ser parecida com esta:
@@ -627,7 +628,8 @@ cat /vault/data/reader-token.json
 Faça o login com este novo token:
 
 ```sh
-vault login <token>
+CLIENT_TOKEN=<token>
+vault login $CLIENT_TOKEN
 ```
 
 Tente excluir as chaves:
@@ -650,7 +652,7 @@ Code: 403. Errors:
 ## Configurando o Agent
 Efetue o logon novamente com o ```root_token```
 ```sh
-vault login <token>
+vault login $TOKEN
 ```
 
 Habilite a autenticação pelo Kubernetes
@@ -659,7 +661,7 @@ Habilite a autenticação pelo Kubernetes
 vault auth enable kubernetes
 ```
 
-Crie uma ```policy``` para utlização do Kubernetes
+Crie uma ```policy``` e uma ```role``` para utlização do Kubernetes
 
 ```sh
 vault write auth/kubernetes/config kubernetes_host="https://$KUBERNETES_PORT_443_TCP_ADDR:443"
@@ -688,16 +690,33 @@ vault write auth/kubernetes/role/vault-agent \
     ttl=24h
 ```
 
-Fora do container do Vault, crie uma uma conta de serviço do Kubernetes para utilização pelo ```Agent```
+Fora do container do Vault, crie uma uma conta de serviço do Kubernetes para utilização pelo ```Agent```. Utilize uma outra janela.
 ```sh
 kubectl create sa vault-agent -n commerce
 ```
 
-## Ativar a injeção da secret na aplicação
-
 Faça um ```patch``` no ```deployment``` das aplicações ```catalog``` para injetar as ```secrets```
 ```sh
 kubectl patch deployment -n commerce catalogapi-v1 --patch-file k8s/vault/catalog-app-patch.yaml
-kubectl patch deployment -n commerce catalogapi-v2 --patch-file k8s/vault/catalog-app-patch.yaml
-kubectl patch deployment -n commerce catalogapi-v3 --patch-file k8s/vault/catalog-app-patch.yaml
 ```
+
+Verifique que os ```pods``` de ```catalog``` foram reiniciados e agora possuem 2 ```containers```. Execute o comando abaixo e veja que foi criado um arquivo dentro do ```pod``` de ```catalog``` com as secrets.
+
+```sh
+kubectl exec -n commerce $(kubectl get pods -l app=catalogapi -n commerce -o jsonpath="{.items[0].metadata.name}") -c catalogapi-api -- cat /vault/secrets/catalogapi.txt
+```
+
+Para utilizar estas variáveis é necessário fazer uma alteração no comando de inicialização do ```pod```. 
+
+```sh
+kubectl patch deployment -n commerce catalogapi-v1 --patch-file k8s/vault/catalog-container-patch.yaml
+```
+
+Remova o ```configMap``` do ```deployment```, ele não será mais necessário
+
+```sh
+kubectl patch -n commerce deploy catalogapi-v1 --type=json -p='[{"op": "remove", "path": "/spec/template/spec/containers/0/envFrom"}]'
+kubectl delete -n commerce configmap catalog-api-v1
+```
+
+Faça algumas chamadas a aplicação e veja que a aplicação continua funcionando, mas as configurações agora são gerenciadas pelo ```Vault```.
