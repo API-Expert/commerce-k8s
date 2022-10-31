@@ -509,7 +509,6 @@ kubectl annotate namespace commerce kuma.io/sidecar-injection=enabled --overwrit
 kubectl annotate service catalog-api -n commerce ingress.kubernetes.io/service-upstream=true --overwrite=true
 kubectl annotate service products-api -n commerce ingress.kubernetes.io/service-upstream=true --overwrite=true
 kubectl annotate service pricing-api -n commerce ingress.kubernetes.io/service-upstream=true --overwrite=true
-kubectl rollout restart deploy -n commerce
     
 ```
 
@@ -612,7 +611,7 @@ vault secrets enable -path=catalog kv-v2
 Com o mecanismo KV habilitado, crie suas secrets
 
 ```sh
-vault kv put catalog/settings/mongo connectionString="mongodb://mongo.mongo.svc:27017" databaseName="Catalog" collectionName="CatalogItems"
+vault kv put catalog/settings/mongo connectionString="mongodb://mongo.mongo.svc:27017" databaseName="catalog" collectionName="catalog"
 ```
 
 Verifique se os valores foram gravados corretamente executando o comando:

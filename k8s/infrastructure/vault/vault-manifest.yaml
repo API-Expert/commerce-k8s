@@ -2,6 +2,8 @@ apiVersion: v1
 kind: Namespace
 metadata:
   name: vault
+  #annotations:
+  #  kuma.io/sidecar-injection: enabled
 ---
 # Source: vault/templates/injector-serviceaccount.yaml
 apiVersion: v1
@@ -161,8 +163,6 @@ metadata:
     app.kubernetes.io/instance: vault
     app.kubernetes.io/managed-by: Helm
     vault-internal: "true"
-  annotations:
-
 spec:
   clusterIP: None
   publishNotReadyAddresses: true
@@ -190,7 +190,7 @@ metadata:
     app.kubernetes.io/name: vault
     app.kubernetes.io/instance: vault
     app.kubernetes.io/managed-by: Helm
-  annotations:
+  
 
 spec:
   # We want the servers to become available even if they're not ready
@@ -252,7 +252,7 @@ spec:
       serviceAccountName: "vault-agent-injector"
       
       securityContext:
-        runAsNonRoot: true
+        runAsNonRoot: false
         runAsGroup: 1000
         runAsUser: 100
         fsGroup: 1000
@@ -375,7 +375,7 @@ spec:
       serviceAccountName: vault
       
       securityContext:
-        runAsNonRoot: true
+        runAsNonRoot: false
         runAsGroup: 1000
         runAsUser: 100
         fsGroup: 1000
