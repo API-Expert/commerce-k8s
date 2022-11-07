@@ -60,10 +60,12 @@ upload_images() {
     docker pull docker.io/patrickreinan/commerce-productsapi:latest
     docker pull docker.io/patrickreinan/commerce-pricingapi:latest
     docker pull docker.io/patrickreinan/commerce-catalogapi:latest
+    docker pull grafana/grafana:8.5.2
 
     minikube -p $CONTEXT image load docker.io/patrickreinan/commerce-productsapi:latest
     minikube -p $CONTEXT image load docker.io/patrickreinan/commerce-pricingapi:latest
     minikube -p $CONTEXT image load docker.io/patrickreinan/commerce-catalogapi:latest
+    minikube -p $CONTEXT image load grafana/grafana:8.5.2
 }
 
 start_k8s

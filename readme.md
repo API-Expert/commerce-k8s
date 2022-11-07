@@ -107,10 +107,10 @@ kubectl apply -f k8s/kong/security/consumers-acl.yaml
 Com o controle de acesso criado, é necessário atribuí-lo aos consumidores:
 
 ```sh
-kubectl patch KongConsumer pricing -n commerce --type=json -p='[{"op": "add", "path": "/credentials/-", "value":"pricing-credential-acl"}]'
-kubectl patch KongConsumer marketing -n commerce --type=json -p='[{"op": "add", "path": "/credentials/-", "value":"marketing-credential-acl"}]'
-kubectl patch KongConsumer external -n commerce --type=json -p='[{"op": "add", "path": "/credentials/-", "value":"external-credential-acl"}]'
-kubectl patch KongConsumer external-canary -n commerce --type=json -p='[{"op": "add", "path": "/credentials/-", "value":"external-credential-canary-acl"}]'
+kubectl patch KongConsumer pricing -n commerce --type=json -p="[{'op': 'add', 'path': '/credentials/-', 'value':'pricing-credential-acl'}]"
+kubectl patch KongConsumer marketing -n commerce --type=json -p="[{'op': 'add', 'path': '/credentials/-', 'value':'marketing-credential-acl'}]"
+kubectl patch KongConsumer external -n commerce --type=json -p="[{'op': 'add', 'path': '/credentials/-', 'value':'external-credential-acl'}]"
+kubectl patch KongConsumer external-canary -n commerce --type=json -p="[{'op': 'add', 'path': '/credentials/-', 'value':'external-credential-canary-acl'}]"
 ```
 Em seguida é necessário configurar as rotas quais os grupos estão autorizados a utilizá-las:
 ```sh
