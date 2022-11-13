@@ -1,4 +1,35 @@
 {
+  "__inputs": [
+    {
+      "name": "DS_ELASTICSEARCH",
+      "label": "Elasticsearch",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "elasticsearch",
+      "pluginName": "Elasticsearch"
+    }
+  ],
+  "__elements": [],
+  "__requires": [
+    {
+      "type": "datasource",
+      "id": "elasticsearch",
+      "name": "Elasticsearch",
+      "version": "1.0.0"
+    },
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "8.5.2"
+    },
+    {
+      "type": "panel",
+      "id": "table",
+      "name": "Table",
+      "version": ""
+    }
+  ],
   "annotations": {
     "list": [
       {
@@ -24,15 +55,15 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 9,
-  "iteration": 1666704998261,
+  "id": null,
+  "iteration": 1668377254818,
   "links": [],
   "liveNow": false,
   "panels": [
     {
       "datasource": {
         "type": "elasticsearch",
-        "uid": "ub5LpdN4k"
+        "uid": "${DS_ELASTICSEARCH}"
       },
       "fieldConfig": {
         "defaults": {
@@ -94,7 +125,7 @@
           ],
           "datasource": {
             "type": "elasticsearch",
-            "uid": "ub5LpdN4k"
+            "uid": "${DS_ELASTICSEARCH}"
           },
           "metrics": [
             {

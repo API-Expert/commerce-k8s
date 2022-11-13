@@ -228,16 +228,12 @@ Utilize o _script_ ```test-catalog-through-kong.sh``` para executar diversas cha
 ```
 
 ## Observabilidade - Análise
-Adicione o _dashboards_ de análise do Kong ao Grafana:
-
-**Kong Official Dashboard (7424)** - https://grafana.com/grafana/dashboards/7424
-
 Adicione o ```data source``` do ElasticSearch para o endereço
 ```
 http://elasticsearch.elasticsearch.svc:9200
 ```
 
-Importe o _dashboard_ ```grafana/kong-logs.json``` ao Grafana.
+Importe os _dashboards_ ```grafana/kong-logs.json``` e ```grafana/kong-metrics.json``` ao Grafana.
 
 Visualize os dados nos _dashboards_ importados.
 
