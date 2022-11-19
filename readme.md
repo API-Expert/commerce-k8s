@@ -405,7 +405,7 @@ Remova a injeção de falhas para não prejudicar os próximos passos:
 kubectl delete -f k8s/kuma/fault-injection/fault-injection.yaml
 ```
 
-# Throttling
+## Throttling
 
 Ative o ```rate-limit``` para o serviço ```pricing```.
 
