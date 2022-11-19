@@ -372,7 +372,7 @@ O timeout é responsável por encerrar a conexão caso o tempo configurado seja 
 kubectl apply -f k8s/kuma/catalog-timeout.yaml
 ```
 
-Faça algumas requisições a ```catalog``` e veja que agora está ocorrendo erro de código de status 504.
+Faça algumas requisições a ```catalog``` e veja que agora está ocorrendo erro de código de status 504. Verifique os ```headers X-Kong-Upstream-Latency``` e ```X-Kong-Proxy-Latency```, veja que é possível identificar o tempo em que a requisição levou do lado do _upstream_.
 
 
 Remova o ```timeout```para não prejudicar os próximos testes
