@@ -487,3 +487,258 @@ kubectl apply -f k8s/kuma/traffic-trace.yaml
 ```
 
 Execute algumas requisições e visualizar o _tracing_ no ```Jaeger``` (http://localhost:8080)
+
+# Configuration Manager
+
+## Preparando o ambiente
+
+Utilize os comandos abaixo para configurar o _service mesh_ e o _api gateway_.
+
+```sh
+kubectl apply -f k8s/kong/global-plugins/observability
+kubectl apply -f k8s/kong/global-plugins/security/tls.yaml
+kubectl apply -f k8s/kong/traffic/routes.yaml 
+kubectl apply -f k8s/kong/global-plugins/security/key-auth.yaml
+kubectl apply -f k8s/kong/security/consumers-key-auth.yaml
+kubectl apply -f k8s/kong/security/consumers-acl.yaml
+kubectl annotate namespace commerce kuma.io/sidecar-injection=enabled --overwrite=true
+kubectl annotate service catalog-api -n commerce ingress.kubernetes.io/service-upstream=true --overwrite=true
+kubectl annotate service products-api -n commerce ingress.kubernetes.io/service-upstream=true --overwrite=true
+kubectl annotate service pricing-api -n commerce ingress.kubernetes.io/service-upstream=true --overwrite=true
+    
+```
+
+Deixe somente a versão ```v1``` do ```catalog``` em funcionamento:
+
+```sh
+kubectl scale deploy catalogapi-v1 --replicas=1 -n commerce 
+kubectl scale deploy catalogapi-v2 --replicas=0 -n commerce 
+kubectl scale deploy catalogapi-v3 --replicas=0 -n commerce 
+```
+
+Abra um sessão com o ```pod``` do Vault:
+```bash
+kubectl exec -it vault-0 -n vault -- sh
+```
+
+Após isso, todos comandos referente a configuração serão executados dentro do ```pod``` do Vault.
+
+## Inicializar
+
+Inicializa o Vault com 3 chaves compartilhadas e pelo menos duas necessárias, salvando as chaves em formato json na pasta de configurações
+
+```sh
+vault operator init -key-shares=3 -key-threshold=2 -format=json > /vault/data/cluster-keys.json
+```
+
+Verifique as chaves e o token inicial usando o comando:
+```sh
+cat /vault/data/cluster-keys.json
+```
+
+O resultado deve ser parecido com este:
+```
+{
+  "unseal_keys_b64": [
+    "NKkkR7JS11K8W+xnHS1I432YmVAzwCl35el9cEXdidcx",
+    "Nb/PZEigX6XSBz5ie7VnCenH6T4WKoVrPgpWMLp7Xwry",
+    "/yFYCQHj9SkqTFWtiQsFVFjJhcbxdwJwlZcxYDx5MStH"
+  ],
+  "unseal_keys_hex": [
+    "34a92447b252d752bc5bec671d2d48e37d98995033c02977e5e97d7045dd89d731",
+    "35bfcf6448a05fa5d2073e627bb56709e9c7e93e162a856b3e0a5630ba7b5f0af2",
+    "ff21580901e3f5292a4c55ad890b055458c985c6f1770270959731603c79312b47"
+  ],
+  "unseal_shares": 3,
+  "unseal_threshold": 2,
+  "recovery_keys_b64": [],
+  "recovery_keys_hex": [],
+  "recovery_keys_shares": 5,
+  "recovery_keys_threshold": 3,
+  "root_token": "hvs.KqEKr5W6qchg1HMDcFaOtz3A"
+}
+
+```
+## Desbloquear
+O vault está bloqueado para utilização, desbloqueio-o usando 2 das 3 chaves distintas presentes no arquivo cluster-keys.json (unseal_keys_b64):
+```sh
+KEY1=[chave aqui]
+KEY2=[chave aqui]
+````
+
+Após atribuir os valores, execute os comandos para desbloquear o vault
+```sh
+vault operator unseal $KEY1
+vault operator unseal $KEY2
+```
+A saída deve mostrar que o Vault está inicializado e desbloqueado:
+```
+Key                     Value
+---                     -----
+Seal Type               shamir
+Initialized             true
+Sealed                  false
+```
+
+## Acessar
+Faça o login no Vault usando o root token presente no arquivo ``cluster-keys.json``
+
+```sh
+TOKEN=<root-token>
+vault login $TOKEN
+```
+
+A mensagem de saída deve ser parecida com esta:
+```
+Success! You are now authenticated. The token information displayed below
+is already stored in the token helper. You do NOT need to run "vault login"
+again. Future Vault requests will automatically use this token.
+
+```
+
+## Ativar mecanismo KV
+Ative o mecanismo KV (Key Value) para armamzenar seus segredos.
+
+```sh
+vault secrets enable -path=catalog kv-v2
+```
+
+## Criar as secrets
+Com o mecanismo KV habilitado, crie suas secrets
+
+```sh
+vault kv put catalog/settings/mongo connectionString="mongodb://mongo.mongo.svc:27017" databaseName="catalog" collectionName="catalog"
+```
+
+Verifique se os valores foram gravados corretamente executando o comando:
+
+```sh
+vault kv get catalog/settings/mongo
+```
+
+Os valores podem ser recuperados via API também.
+
+> Importante: Execute este comando fora do container. 
+```sh
+curl -i http://127.0.0.1:8200/v1/catalog/data/settings/mongo -H 'Authorization: Bearer <token>'
+```
+
+## Gerenciando políticas
+
+Crie uma policy que permita somente leitura das secrets:
+
+```sh
+vault policy write readers - <<EOF
+path "catalog/data/settings/mongo" {
+  capabilities = ["read"]
+}
+EOF
+```
+
+Crie um novo token para esta policy:
+
+```sh
+vault token create -policy=readers -format=json > /vault/data/reader-token.json
+```
+
+Recupere o novo token fazendo a leitura do arquivo:
+
+```sh
+cat /vault/data/reader-token.json
+```
+
+Faça o login com este novo token:
+
+```sh
+CLIENT_TOKEN=<token>
+vault login $CLIENT_TOKEN
+```
+
+Tente excluir as chaves:
+```sh
+vault kv delete catalog/settings/mongo
+```
+
+A saída deve ser:
+```
+Error deleting catalog/data/settings/mongo: Error making API request.
+
+URL: DELETE http://127.0.0.1:8200/v1/catalog/data/settings/mongo
+Code: 403. Errors:
+
+* 1 error occurred:
+	* permission denied
+```
+
+
+## Configurando o Agent
+Efetue o logon novamente com o ```root_token```
+```sh
+vault login $TOKEN
+```
+
+Habilite a autenticação pelo Kubernetes
+
+```sh
+vault auth enable kubernetes
+```
+
+Crie uma ```policy``` e uma ```role``` para utlização do Kubernetes
+
+```sh
+vault write auth/kubernetes/config kubernetes_host="https://$KUBERNETES_PORT_443_TCP_ADDR:443"
+
+vault policy write vault-agent - <<EOF
+path "catalog/data/settings/mongo" {
+  capabilities = ["read"]
+}
+EOF
+```
+
+Habilite o mecanismo de autorização de AppRole
+
+```sh
+vault auth enable approle
+```
+
+Configure uma AppRole para ser usada pelo ```agent```.
+
+
+```sh
+vault write auth/kubernetes/role/vault-agent \
+    bound_service_account_names=vault-agent \
+    bound_service_account_namespaces=commerce \
+    policies=vault-agent \
+    ttl=24h
+```
+
+Fora do container do Vault, crie uma uma conta de serviço do Kubernetes para utilização pelo ```Agent```. Utilize uma outra janela.
+```sh
+kubectl create sa vault-agent -n commerce
+```
+
+Faça um ```patch``` no ```deployment``` das aplicações ```catalog``` para injetar as ```secrets```
+```sh
+kubectl patch deployment -n commerce catalogapi-v1 --patch-file k8s/vault/catalog-app-patch.yaml
+```
+
+Verifique que os ```pods``` de ```catalog``` foram reiniciados e agora possuem 2 ```containers```. Execute o comando abaixo e veja que foi criado um arquivo dentro do ```pod``` de ```catalog``` com as secrets.
+
+```sh
+kubectl exec -n commerce $(kubectl get pods -l app=catalogapi -n commerce -o jsonpath="{.items[0].metadata.name}") -c catalogapi-api -- cat /vault/secrets/catalogapi.txt
+```
+
+Para utilizar estas variáveis é necessário fazer uma alteração no comando de inicialização do ```pod```. 
+
+```sh
+kubectl patch deployment -n commerce catalogapi-v1 --patch-file k8s/vault/catalog-container-patch.yaml
+```
+
+Remova o ```configMap``` do ```deployment```, ele não será mais necessário
+
+```sh
+kubectl patch -n commerce deploy catalogapi-v1 --type=json -p='[{"op": "remove", "path": "/spec/template/spec/containers/0/envFrom"}]'
+kubectl delete -n commerce configmap catalog-api-v1
+```
+
+Faça algumas chamadas a aplicação e veja que a aplicação continua funcionando, mas as configurações agora são gerenciadas pelo ```Vault```.
