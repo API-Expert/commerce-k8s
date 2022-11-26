@@ -1,0 +1,21 @@
+apiVersion: kuma.io/v1alpha1
+kind: HealthCheck
+mesh: default
+metadata:
+  name: catalog-health-check
+spec:
+  sources:
+  - match:
+      kuma.io/service: '*'
+  destinations:
+  - match:
+      kuma.io/service: catalog-api_commerce_svc_80
+  conf:
+    interval: 10s
+    timeout: 2s
+    unhealthyThreshold: 3
+    healthyThreshold: 1
+    eventLogPath: "/dev/stdout"
+    http:
+      path: /health
+      expectedStatuses: [200]

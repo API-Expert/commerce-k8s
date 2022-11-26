@@ -468,6 +468,21 @@ Faça chamadas de ```POST``` a API de ```pricing``` e veja que funciona normalme
   ```
 - Faça chamadas e observe o comportamento
 
+## Healthcheck
+
+O _health check_ verifica se a aplicação está respondendo em um intervalo predefinido:
+
+```sh
+ kubectl apply -f k8s/kuma/health-check-catalog.yaml
+```
+
+É possível verificar os _logs_ de _health check_ com o comando:
+
+```sh
+kubectl logs -l app=catalogapi -n commerce -c kuma-sidecar -f
+```
+
+Nos dashboards, verifique a disponibilidade do ```catalog```.
 
 ## Observabilidade e segurança
 Visite a página do _dashboard_ do _service mesh_ e veja as configurações já aplicadas através do arquivo ```k8s/kuma/mesh.yaml```.
