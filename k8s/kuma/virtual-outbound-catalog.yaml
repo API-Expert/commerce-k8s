@@ -1,0 +1,30 @@
+apiVersion: kuma.io/v1alpha1
+kind: VirtualOutbound
+mesh: default
+metadata:
+  name: virtual-outbound-catalog
+spec:
+    selectors:
+      - match:
+          kuma.io/service: "catalog-api_commerce_svc_80"
+    conf:
+      host: "{{.app}}-{{.ver}}"
+      port: "80"
+      parameters:
+      - name: app
+        tagKey: app
+      - name: ver
+        tagKey: version
+      - name: service
+        tagKey: kuma.io/service
+---
+apiVersion: v1
+data:
+  CATALOGAPI__BASEURL: http://catalogapi-v3
+  MONGODB__COLLECTIONNAME: pricing
+  MONGODB__ConnectionString: mongodb://mongo.mongo.svc:27017
+  MONGODB__DATABASENAME: pricing
+kind: ConfigMap
+metadata:
+  name: pricing-api
+  namespace: commerce

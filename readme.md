@@ -434,6 +434,41 @@ Usando a requisição ```items (balancing)``` da coleção ```catalog``` do Post
 * Somente com um dos _headers_.
 * Com os dois _headers_.
 
+## Virtual Outbound
+É possível criar _hostnames_ customizados para os serviços através do _service mesh_
+
+Execute o comando abaixo para criar um _hostname_ ```catalogapi-version``` e alterar o endereço de chamada do ```catalog``` do serviço ```pricing```:
+
+```sh
+kubectl apply -f k8s/kuma/virtual-outbound-catalog.yaml
+```
+
+Faça o _rollout_ dos ```pods``` para aplicar a nova configuração:
+
+```sh
+kubectl rollout restart deploy pricingapi -n commerce
+```
+
+Faça chamadas de ```POST``` a API de ```pricing``` e veja que funciona normalmente.
+
+### Alguns testes
+- Ative as versões ```v2``` e ```v3```, 
+  ```sh
+  kubectl scale deploy catalogapi-v2 --replicas=1 -n commerce 
+  kubectl scale deploy catalogapi-v3 --replicas=1 -n commerce 
+  ```
+
+- Troque a versão de chamada de ```pricing```:
+  ```sh
+  kubectl edit configmap pricing-api -n commerce  
+  ```
+- Faça o _rollout_ de ```pricing``` 
+  ```sh
+  kubectl rollout restart deploy pricingapi -n commerce
+  ```
+- Faça chamadas e observe o comportamento
+
+
 ## Observabilidade e segurança
 Visite a página do _dashboard_ do _service mesh_ e veja as configurações já aplicadas através do arquivo ```k8s/kuma/mesh.yaml```.
 
