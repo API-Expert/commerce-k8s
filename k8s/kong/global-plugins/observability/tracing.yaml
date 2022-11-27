@@ -7,7 +7,7 @@ metadata:
   labels:
     global: "true"
 config: 
-  http_endpoint: http://jaeger-collector.mesh-observability:9411/api/v2/spans
+  http_endpoint: http://jaeger-collector.mesh-observability.svc.cluster.local:9411/api/v2/spans
   sample_ratio: 1 #envia todos os requests para o zipkin
   include_credential: true
   traceid_byte_count: 16

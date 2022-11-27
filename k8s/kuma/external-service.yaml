@@ -6,6 +6,55 @@ metadata:
 spec:
   tags:
     kuma.io/service: mongo
-    kuma.io/protocol: tcp 
   networking:
-    address: mongo.mongo.svc:27017
+    address: mongo.mongo.svc.cluster.local:27017
+---
+apiVersion: kuma.io/v1alpha1
+kind: ExternalService
+mesh: default
+metadata:
+  name: zipkin
+spec:
+  tags:
+    kuma.io/service: zipkin 
+  networking:
+    address: jaeger-collector.mesh-observability.svc.cluster.local:9411
+---
+apiVersion: kuma.io/v1alpha1
+kind: ExternalService
+mesh: default
+metadata:
+  name: logstash
+spec:
+  tags:
+    kuma.io/service: logstash
+  networking:
+    address: logstash.logstash.svc.cluster.local:5044
+
+---
+apiVersion: kuma.io/v1alpha1
+kind: ExternalService
+mesh: default
+metadata:
+  name: elasticsearch
+spec:
+  tags:
+    kuma.io/service: elasticsearch 
+  networking:
+    address: elasticsearch.elasticsearch.svc.cluster.local:9200
+---
+
+
+apiVersion: kuma.io/v1alpha1
+kind: ExternalService
+mesh: default
+metadata:
+  name: kubernetes
+spec:
+  tags:
+    kuma.io/service: kubernetes 
+  networking:
+    address: 10.96.0.1:443
+
+
+

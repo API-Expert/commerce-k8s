@@ -7,6 +7,8 @@ spec:
   # This TrafficLog policy applies all traffic in that Mesh.
   sources:
     - match:
+        kuma.io/service: "kong-proxy_kong_svc_80"
+    - match:
         kuma.io/service: "catalog-api_commerce_svc_80"
     - match:
         kuma.io/service: "pricing-api_commerce_svc_80"
@@ -14,10 +16,6 @@ spec:
         kuma.io/service: "products-api_commerce_svc_80"
   destinations:
     - match:
-        kuma.io/service: "catalog-api_commerce_svc_80"
-    - match:
-        kuma.io/service: "pricing-api_commerce_svc_80"
-    - match:
-        kuma.io/service: "products-api_commerce_svc_80"
+        kuma.io/service: "*"
   conf:
     backend: logstash

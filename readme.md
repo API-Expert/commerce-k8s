@@ -484,13 +484,27 @@ kubectl logs -l app=catalogapi -n commerce -c kuma-sidecar -f
 
 Nos dashboards, verifique a disponibilidade do ```catalog```.
 
+## External Services
+Permite identificar os serviços acessados fora do _mesh_
+
+```sh
+kubectl apply -f k8s/kuma/external-service.yaml
+```
+
 ## Observabilidade e segurança
 Visite a página do _dashboard_ do _service mesh_ e veja as configurações já aplicadas através do arquivo ```k8s/kuma/mesh.yaml```.
 
 http://localhost:5681/gui/#/meshes/all
 
+
+
 ## TLS Mútuo
 Cria um certificado de comunicação entre o serviços. (Ativado no passo anterior)
+
+## Passthrough
+O modo passthrough quando ativado, bloqueia por padrão todas as saídas do mesh. Desta forma, todo o tráfego precisa ser identificado por ```trafficpermission``` e ```trafficroute```.
+
+> Veja configuração do _mesh_.
 
 ## Autorização
 O _service mesh_ foi instalado de forma permissiva, ou seja, todo o tráfego é permitido a todos os serviços. 
@@ -657,7 +671,7 @@ vault secrets enable -path=catalog kv-v2
 Com o mecanismo KV habilitado, crie suas secrets
 
 ```sh
-vault kv put catalog/settings/mongo connectionString="mongodb://mongo.mongo.svc:27017" databaseName="catalog" collectionName="catalog"
+vault kv put catalog/settings/mongo connectionString="mongodb://mongo.mongo.svc.cluster.local:27017" databaseName="catalog" collectionName="catalog"
 ```
 
 Verifique se os valores foram gravados corretamente executando o comando:

@@ -22,7 +22,7 @@ apiVersion: v1
 data:
   CATALOGAPI__BASEURL: http://catalogapi-v3
   MONGODB__COLLECTIONNAME: pricing
-  MONGODB__ConnectionString: mongodb://mongo.mongo.svc:27017
+  MONGODB__ConnectionString: mongodb://mongo.mongo.svc.cluster.local:27017
   MONGODB__DATABASENAME: pricing
 kind: ConfigMap
 metadata:

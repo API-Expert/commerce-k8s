@@ -12,7 +12,7 @@ metadata:
 data:
   MONGODB__COLLECTIONNAME: products
   MONGODB__DATABASENAME: products
-  MONGODB__ConnectionString: mongodb://mongo.mongo.svc:27017 
+  MONGODB__ConnectionString: mongodb://mongo.mongo.svc.cluster.local:27017 
   CATALOGAPI__BASEURL: http://catalog-api
 ---
 apiVersion: v1
@@ -24,7 +24,7 @@ data:
   CATALOG__VERSION: 'v1'
   MONGODB__COLLECTIONNAME: catalog
   MONGODB__DATABASENAME: catalog
-  MONGODB__ConnectionString: mongodb://mongo.mongo.svc:27017
+  MONGODB__ConnectionString: mongodb://mongo.mongo.svc.cluster.local:27017
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -35,7 +35,7 @@ data:
   CATALOG__VERSION: 'v2' 
   MONGODB__COLLECTIONNAME: catalog
   MONGODB__DATABASENAME: catalog
-  MONGODB__ConnectionString: mongodb://mongo.mongo.svc:27017
+  MONGODB__ConnectionString: mongodb://mongo.mongo.svc.cluster.local:27017
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -46,7 +46,7 @@ data:
   CATALOG__VERSION: ''
   MONGODB__COLLECTIONNAME: catalog
   MONGODB__DATABASENAME: catalog
-  MONGODB__ConnectionString: mongodb://mongo.mongo.svc:27017
+  MONGODB__ConnectionString: mongodb://mongo.mongo.svc.cluster.local:27017
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -57,7 +57,7 @@ metadata:
 data:
   MONGODB__COLLECTIONNAME: pricing
   MONGODB__DATABASENAME: pricing
-  MONGODB__ConnectionString: mongodb://mongo.mongo.svc:27017
+  MONGODB__ConnectionString: mongodb://mongo.mongo.svc.cluster.local:27017
   CATALOGAPI__BASEURL: http://catalog-api
 
 ---

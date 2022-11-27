@@ -3,6 +3,9 @@ kind: Mesh
 metadata:
   name: default
 spec:
+  networking:
+    outbound:
+      passthrough: true
   mtls:
     enabledBackend: ca-1
     backends:
@@ -16,7 +19,7 @@ spec:
       type: zipkin
       sampling: 100.0
       conf:
-        url: http://jaeger-collector.mesh-observability:9411/api/v2/spans
+        url: http://jaeger-collector.mesh-observability.svc.cluster.local:9411/api/v2/spans
   logging:
     defaultBackend: logstash
     backends:

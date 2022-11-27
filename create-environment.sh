@@ -42,7 +42,6 @@ configure_gateway() {
 configure_service_mesh() {
    
     kubectl --context=$CONTEXT apply -f k8s/kuma/mesh.yaml
-    kubectl --context=$CONTEXT apply -f k8s/kuma/external-service.yaml
     kubectl --context=$CONTEXT apply -f k8s/kuma/observability-traffic-permissions.yaml
     
     kubectl --context=$CONTEXT delete circuitbreaker circuit-breaker-all-default
