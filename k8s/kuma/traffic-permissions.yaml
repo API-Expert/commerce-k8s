@@ -50,3 +50,16 @@ spec:
   destinations:
   - match:
       kuma.io/service: mongo
+---
+apiVersion: kuma.io/v1alpha1
+kind: TrafficPermission
+mesh: default
+metadata:
+  name: to-elastic
+spec:
+  sources:
+  - match:
+     kuma.io/service: "*"
+  destinations:
+  - match:
+      kuma.io/service: elasticsearch

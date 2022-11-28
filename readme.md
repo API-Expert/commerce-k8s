@@ -425,9 +425,17 @@ kubectl delete -f k8s/kuma/pricing-ratelimit.yaml
 ## Load Balance
 Faça um balanceamento de carga das requisições entre a versão v1 e v2:
 
+Ative as versões ```v2``` e ```v3```, 
+```sh
+kubectl scale deploy catalogapi-v2 --replicas=1 -n commerce 
+kubectl scale deploy catalogapi-v3 --replicas=1 -n commerce 
+```
+
 ```sh
 kubectl apply -f k8s/kuma/routing/load-balance.yaml
 ```
+
+
 
 Usando a requisição ```items (balancing)``` da coleção ```catalog``` do Postman, faça requisições:
 * Sem o ```header stable:yes``` e sem o ```header canary:yes``` e observe o ```header version```no _response_.
@@ -437,7 +445,13 @@ Usando a requisição ```items (balancing)``` da coleção ```catalog``` do Post
 ## Virtual Outbound
 É possível criar _hostnames_ customizados para os serviços através do _service mesh_
 
+Ative as rotas básicas
+```sh
+kubectl apply -f k8s/kuma/routing/basic-traffic-route.yaml 
+```
+
 Execute o comando abaixo para criar um _hostname_ ```catalogapi-version``` e alterar o endereço de chamada do ```catalog``` do serviço ```pricing```:
+
 
 ```sh
 kubectl apply -f k8s/kuma/virtual-outbound-catalog.yaml

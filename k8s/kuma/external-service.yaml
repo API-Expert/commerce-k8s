@@ -1,3 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: catalog-api-v1
+  namespace: commerce
+data:
+  CATALOG__VERSION: 'v1'
+  MONGODB__COLLECTIONNAME: catalog
+  MONGODB__DATABASENAME: catalog
+  MONGODB__ConnectionString: mongodb://mongo.mesh:27017
+---
 apiVersion: kuma.io/v1alpha1
 kind: ExternalService
 mesh: default
@@ -7,7 +18,7 @@ spec:
   tags:
     kuma.io/service: mongo
   networking:
-    address: mongo.mongo.svc.cluster.local:27017
+    address: 10.99.253.133:27017
 ---
 apiVersion: kuma.io/v1alpha1
 kind: ExternalService

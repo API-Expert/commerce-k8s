@@ -20,7 +20,7 @@ spec:
 ---
 apiVersion: v1
 data:
-  CATALOGAPI__BASEURL: http://catalogapi-v3
+  CATALOGAPI__BASEURL: http://catalogapi-v1
   MONGODB__COLLECTIONNAME: pricing
   MONGODB__ConnectionString: mongodb://mongo.mongo.svc.cluster.local:27017
   MONGODB__DATABASENAME: pricing
