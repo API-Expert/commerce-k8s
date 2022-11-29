@@ -496,6 +496,8 @@ O _health check_ verifica se a aplicação está respondendo em um intervalo pre
 kubectl logs -l app=catalogapi -n commerce -c kuma-sidecar -f
 ```
 
+Caso o _health check_ identifique que a aplicação está ```unhealthy``` ele automaticamente pára de enviar enviar requisições.
+
 Nos dashboards, verifique a disponibilidade do ```catalog```.
 
 ## External Services
