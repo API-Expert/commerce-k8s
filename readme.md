@@ -721,7 +721,8 @@ Os valores podem ser recuperados via API também.
 
 > Importante: Execute este comando fora do container. 
 ```sh
-curl -i http://127.0.0.1:8200/v1/catalog/data/settings/mongo -H 'Authorization: Bearer <token>'
+TOKEN=<token>
+curl -i http://127.0.0.1:8200/v1/catalog/data/settings/mongo -H "Authorization: Bearer $TOKEN"
 ```
 
 ## Gerenciando políticas
