@@ -596,6 +596,19 @@ kubectl scale deploy catalogapi-v2 --replicas=0 -n commerce
 kubectl scale deploy catalogapi-v3 --replicas=0 -n commerce 
 ```
 
+Liste os ```pods``` do ```Vault``` e veja que estão em ```Running``` porém não estão ```Ready```
+
+```sh
+kubectl get pods -n vault
+```
+```
+NAME                                   READY   STATUS      RESTARTS   AGE
+vault-0                                0/1     Running     0          7m24s
+vault-agent-injector-56567df48-cc8gv   1/1     Running     0          7m24s
+vault-server-test                      0/1     Completed   0          7m23s
+```
+Será necessário inicializar o ```Vault```.
+
 Abra um sessão com o ```pod``` do Vault:
 ```bash
 kubectl exec -it vault-0 -n vault -- sh
