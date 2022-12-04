@@ -254,6 +254,8 @@ kubectl apply -f k8s/kong/security/consumers-key-auth.yaml
 kubectl apply -f k8s/kong/security/consumers-acl.yaml
 ```
 
+> Faça o ```port-forward```
+
 ## Ativando o service mesh no namespace
 Para que o _service mesh_ seja instalado na aplicação é necessário que o namespace receba uma  ```annotation``` para identificar que os ```pods``` farão parte do _service mesh_, assim como uma ```annotation``` nos serviços.
 
@@ -596,10 +598,7 @@ kubectl scale deploy catalogapi-v2 --replicas=0 -n commerce
 kubectl scale deploy catalogapi-v3 --replicas=0 -n commerce 
 ```
 
-Faça o ```port-forward```
-```
-./port-forward.sh
-```
+> Faça o ```port-forward```
 
 Liste os ```pods``` do ```Vault``` e veja que estão em ```Running``` porém não estão ```Ready```
 
