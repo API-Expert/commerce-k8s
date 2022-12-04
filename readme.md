@@ -843,3 +843,6 @@ kubectl delete -n commerce configmap catalog-api-v1
 ```
 
 Faça algumas chamadas a aplicação e veja que a aplicação continua funcionando, mas as configurações agora são gerenciadas pelo ```Vault```.
+
+## Versionamento
+Pela inteface gráfica crie versões das configurações e faça testes.
