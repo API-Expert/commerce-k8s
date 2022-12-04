@@ -1,0 +1,17 @@
+spec:
+  template:
+    spec:
+      serviceAccountName: vault-agent
+    metadata:
+      annotations:
+        traffic.kuma.io/exclude-outbound-ports: "8200,8201"
+        vault.hashicorp.com/agent-init-first: 'true'
+        vault.hashicorp.com/agent-inject: 'true'
+        vault.hashicorp.com/role: 'vault-agent'
+        vault.hashicorp.com/agent-inject-secret-catalogapi.txt: 'catalog/data/settings/mongo'
+        vault.hashicorp.com/agent-inject-template-catalogapi.txt: |
+          {{ with secret "catalog/data/settings/mongo" -}}
+          export MONGODB__ConnectionString={{ .Data.data.connectionString }}
+          export MONGODB__CollectionName={{ .Data.data.collectionName }}
+          export MONGODB__DatabaseName={{ .Data.data.databaseName }}
+          {{- end }}

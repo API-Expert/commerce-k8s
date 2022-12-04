@@ -1,0 +1,12 @@
+spec:
+  template:
+    spec:
+      containers:
+      - name: catalogapi-api
+        command: ["/bin/sh"]
+        args: ["-c", " . /vault/secrets/catalogapi.txt; env;dotnet catalog-api.dll"]
+        env:
+        - name: CATALOG__VERSION
+          value: v1
+
+
