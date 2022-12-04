@@ -608,16 +608,9 @@ vault-agent-injector-56567df48-cc8gv   1/1     Running     0          7m24s
 vault-server-test                      0/1     Completed   0          7m23s
 ```
 
-Tente acessar a interface gráfica através do endereço abaixo e veja que de fato o ```Vault``` está fechado.
-
-```html
-http://localhost:8200
-```
-
+Tente acessar a interface gráfica através do endereço http://localhost:8200 e veja que de fato o ```Vault``` está fechado.
 
 Será necessário inicializar o ```Vault```.
-
-
 
 Abra um sessão com o ```pod``` do Vault:
 ```bash
