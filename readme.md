@@ -596,6 +596,11 @@ kubectl scale deploy catalogapi-v2 --replicas=0 -n commerce
 kubectl scale deploy catalogapi-v3 --replicas=0 -n commerce 
 ```
 
+Faça o ```port-forward```
+```
+./port-forward.sh
+```
+
 Liste os ```pods``` do ```Vault``` e veja que estão em ```Running``` porém não estão ```Ready```
 
 ```sh
