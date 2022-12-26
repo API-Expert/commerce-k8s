@@ -44,7 +44,7 @@ kubectl --context=$CONTEXT wait pods -n kuma-system -l app=kuma-control-plane --
 kubectl --context=$CONTEXT wait pods -n kong -l app=ingress-kong --for condition=Ready --timeout=90s
 kubectl --context=$CONTEXT wait pods -n mesh-observability -l app=grafana --for condition=Ready --timeout=90s
 kubectl --context=$CONTEXT wait pods -n mesh-observability -l app=jaeger --for condition=Ready --timeout=90s
-kubectl --context=$CONTEXT wait pods -n vault -l app.kubernetes.io/name=vault --for condition=Ready --timeout=90s
+kubectl --context=$CONTEXT wait pods -n vault -l app.kubernetes.io/name=vault --for condition=Ready --timeout=10s
 
 echo
 

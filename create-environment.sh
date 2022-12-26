@@ -56,15 +56,31 @@ configure_service_mesh() {
 upload_images() {
 
     
-    docker pull docker.io/patrickreinan/commerce-productsapi:$COMMERCE_VERSION
-    docker pull docker.io/patrickreinan/commerce-pricingapi:$COMMERCE_VERSION
-    docker pull docker.io/patrickreinan/commerce-catalogapi:$COMMERCE_VERSION
-    docker pull grafana/grafana:8.5.2
+    #docker pull docker.io/patrickreinan/commerce-productsapi:$COMMERCE_VERSION
+    #docker pull docker.io/patrickreinan/commerce-pricingapi:$COMMERCE_VERSION
+    #docker pull docker.io/patrickreinan/commerce-catalogapi:$COMMERCE_VERSION
+    #docker pull grafana/grafana:8.5.2
+
+    pull_image docker.io/patrickreinan/commerce-productsapi:$COMMERCE_VERSION
+    pull_image docker.io/patrickreinan/commerce-pricingapi:$COMMERCE_VERSION
+    pull_image docker.io/patrickreinan/commerce-catalogapi:$COMMERCE_VERSION
+    pull_image grafana/grafana:8.5.2 
 
     minikube -p $CONTEXT image load docker.io/patrickreinan/commerce-productsapi:$COMMERCE_VERSION
     minikube -p $CONTEXT image load docker.io/patrickreinan/commerce-pricingapi:$COMMERCE_VERSION
     minikube -p $CONTEXT image load docker.io/patrickreinan/commerce-catalogapi:$COMMERCE_VERSION
     minikube -p $CONTEXT image load grafana/grafana:8.5.2
+}
+
+pull_image() {
+    imagename=$1
+
+    imageid=$(docker image ls $imagename -q) 
+
+    if [ -z "$imageid" ]
+    then
+        docker pull $imagename
+    fi
 }
 
 
