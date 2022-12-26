@@ -81,11 +81,16 @@ spec:
     spec:
       containers:
       - name: products-api
-        image: patrickreinan/commerce-productsapi:latest
+        image: patrickreinan/commerce-productsapi:v2
         imagePullPolicy: Never
         envFrom:
         - configMapRef:
             name: products-api
+        env:
+        - name: LOGGING__LOGLEVEL__DEFAULT
+          value: Information
+        - name: LOGGING__LOGLEVEL__Microsoft_AspNetCore
+          value: None
         ports:
         - containerPort: 80
         resources:
@@ -117,11 +122,16 @@ spec:
     spec:
       containers:
       - name: catalogapi-api
-        image: patrickreinan/commerce-catalogapi:latest
+        image: patrickreinan/commerce-catalogapi:v2
         imagePullPolicy: Never
         envFrom:
         - configMapRef:
             name: catalog-api-v1
+        env:
+        - name: LOGGING__LOGLEVEL__DEFAULT
+          value: Information
+        - name: LOGGING__LOGLEVEL__Microsoft_AspNetCore
+          value: None
         ports:
         - containerPort: 80
         resources:
@@ -152,11 +162,16 @@ spec:
     spec:
       containers:
       - name: catalogapi-api
-        image: patrickreinan/commerce-catalogapi:latest
+        image: patrickreinan/commerce-catalogapi:v2
         imagePullPolicy: Never
         envFrom:
         - configMapRef:
             name: catalog-api-v2
+        env:
+        - name: LOGGING__LOGLEVEL__DEFAULT
+          value: Information
+        - name: LOGGING__LOGLEVEL__Microsoft_AspNetCore
+          value: None
         ports:
         - containerPort: 80
         resources:
@@ -188,11 +203,16 @@ spec:
     spec:
       containers:
       - name: catalogapi-api
-        image: patrickreinan/commerce-catalogapi:latest
+        image: patrickreinan/commerce-catalogapi:v2
         imagePullPolicy: Never
         envFrom:
         - configMapRef:
             name: catalog-api-v3
+        env:
+        - name: LOGGING__LOGLEVEL__DEFAULT
+          value: Information
+        - name: LOGGING__LOGLEVEL__Microsoft_AspNetCore
+          value: None
         ports:
         - containerPort: 80
         resources:
@@ -224,11 +244,16 @@ spec:
     spec:
       containers:
       - name: pricing-api
-        image: patrickreinan/commerce-pricingapi:latest
+        image: patrickreinan/commerce-pricingapi:v2
         imagePullPolicy: Never
         envFrom:
         - configMapRef:
             name: pricing-api
+        env:
+        - name: LOGGING__LOGLEVEL__DEFAULT
+          value: Information
+        - name: LOGGING__LOGLEVEL__Microsoft_AspNetCore
+          value: None
         ports:
         - containerPort: 80
         resources:

@@ -1,6 +1,5 @@
 CONTEXT=commerce
-
-
+COMMERCE_VERSION=v2
 
 start_k8s () {
 
@@ -57,14 +56,14 @@ configure_service_mesh() {
 upload_images() {
 
     
-    docker pull docker.io/patrickreinan/commerce-productsapi:latest
-    docker pull docker.io/patrickreinan/commerce-pricingapi:latest
-    docker pull docker.io/patrickreinan/commerce-catalogapi:latest
+    docker pull docker.io/patrickreinan/commerce-productsapi:$COMMERCE_VERSION
+    docker pull docker.io/patrickreinan/commerce-pricingapi:$COMMERCE_VERSION
+    docker pull docker.io/patrickreinan/commerce-catalogapi:$COMMERCE_VERSION
     docker pull grafana/grafana:8.5.2
 
-    minikube -p $CONTEXT image load docker.io/patrickreinan/commerce-productsapi:latest
-    minikube -p $CONTEXT image load docker.io/patrickreinan/commerce-pricingapi:latest
-    minikube -p $CONTEXT image load docker.io/patrickreinan/commerce-catalogapi:latest
+    minikube -p $CONTEXT image load docker.io/patrickreinan/commerce-productsapi:$COMMERCE_VERSION
+    minikube -p $CONTEXT image load docker.io/patrickreinan/commerce-pricingapi:$COMMERCE_VERSION
+    minikube -p $CONTEXT image load docker.io/patrickreinan/commerce-catalogapi:$COMMERCE_VERSION
     minikube -p $CONTEXT image load grafana/grafana:8.5.2
 }
 
