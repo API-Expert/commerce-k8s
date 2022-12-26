@@ -57,14 +57,14 @@ function Configure-Service-Mesh() {
 function Upload-Images() {
 
     
-    docker pull docker.io/patrickreinan/commerce-productsapi:latest
-    docker pull docker.io/patrickreinan/commerce-pricingapi:latest
-    docker pull docker.io/patrickreinan/commerce-catalogapi:latest
+    docker pull docker.io/patrickreinan/commerce-productsapi:v1
+    docker pull docker.io/patrickreinan/commerce-pricingapi:v1
+    docker pull docker.io/patrickreinan/commerce-catalogapi:v1
     docker pull grafana/grafana:8.5.2 
 
-    minikube -p $env:CONTEXT image load docker.io/patrickreinan/commerce-productsapi:latest
-    minikube -p $env:CONTEXT image load docker.io/patrickreinan/commerce-pricingapi:latest
-    minikube -p $env:CONTEXT image load docker.io/patrickreinan/commerce-catalogapi:latest
+    minikube -p $env:CONTEXT image load docker.io/patrickreinan/commerce-productsapi:v1
+    minikube -p $env:CONTEXT image load docker.io/patrickreinan/commerce-pricingapi:v1
+    minikube -p $env:CONTEXT image load docker.io/patrickreinan/commerce-catalogapi:v1
     minikube -p $env:CONTEXT image load grafana/grafana:8.5.2
 }
 

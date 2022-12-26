@@ -81,7 +81,7 @@ spec:
     spec:
       containers:
       - name: products-api
-        image: patrickreinan/commerce-productsapi:latest
+        image: patrickreinan/commerce-productsapi:v1
         imagePullPolicy: Never
         envFrom:
         - configMapRef:
@@ -117,7 +117,7 @@ spec:
     spec:
       containers:
       - name: catalogapi-api
-        image: patrickreinan/commerce-catalogapi:latest
+        image: patrickreinan/commerce-catalogapi:v1
         imagePullPolicy: Never
         envFrom:
         - configMapRef:
@@ -152,7 +152,7 @@ spec:
     spec:
       containers:
       - name: catalogapi-api
-        image: patrickreinan/commerce-catalogapi:latest
+        image: patrickreinan/commerce-catalogapi:v1
         imagePullPolicy: Never
         envFrom:
         - configMapRef:
@@ -188,7 +188,7 @@ spec:
     spec:
       containers:
       - name: catalogapi-api
-        image: patrickreinan/commerce-catalogapi:latest
+        image: patrickreinan/commerce-catalogapi:v1
         imagePullPolicy: Never
         envFrom:
         - configMapRef:
@@ -224,7 +224,7 @@ spec:
     spec:
       containers:
       - name: pricing-api
-        image: patrickreinan/commerce-pricingapi:latest
+        image: patrickreinan/commerce-pricingapi:v1
         imagePullPolicy: Never
         envFrom:
         - configMapRef:
